@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Expenses Advisor</string>
+    <string name="title_checks_list">Чеки</string>
+    <string name="title_qr_scanner">Сканировать</string>
+    <string name="title_statistics">Статистика</string>
+</resources>
