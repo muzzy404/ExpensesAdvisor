@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_primary_dark"
+    tools:context=".LoginActivity">
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="@dimen/login_card_width"
+        android:paddingStart="@dimen/login_card_padding"
+        android:paddingEnd="@dimen/login_card_padding"
+        android:paddingTop="@dimen/login_card_padding"
+        android:paddingBottom="@dimen/login_card_padding"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_white">
+
+        <EditText
+            android:id="@+id/username_field"
+            style="@style/LoginFieldsTheme"
+            android:hint="@string/title_login"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/password_field"
+            style="@style/LoginFieldsTheme"
+            android:hint="@string/title_password"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/signup_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_primary_dark"
+            android:textSize="@dimen/login_field_text_size"
+            android:gravity="center"
+            android:text="@string/title_sign_up_link" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_marginTop="@dimen/login_card_button_top_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:background="@color/color_primary"
+            android:text="@string/title_login_button" />
+    </LinearLayout>
+</FrameLayout>

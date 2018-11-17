@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:override="true">
     <color name="color_primary">#721c80</color>
     <color name="color_primary_dark">#4d4365</color>
     <color name="color_accent">#ff5f4f</color>
 
     <color name="color_navigation_not_active">#b89cbc</color>
     <color name="color_navigation_active">#ffffff</color>
+
+    <color name="color_white">#ffffff</color>
+    <color name="color_login_filed">#ebe4ec</color>
+    <color name="color_error">#e91a6d</color>
 </resources>

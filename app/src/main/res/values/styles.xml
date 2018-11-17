@@ -1,12 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+
+        <item name="colorSecondary">@color/color_primary_dark</item>
+        <item name="android:colorBackground">@color/color_white</item>
+        <item name="colorError">@color/color_error</item>
     </style>
+
+    <style name="LoginFieldsTheme">
+        <item name="android:ems">10</item>
+        <item name="android:padding">@dimen/login_field_padding</item>
+        <item name="android:layout_marginBottom">@dimen/login_field_margin_bottom</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/login_field_height</item>
+        <item name="android:textSize">@dimen/login_field_text_size</item>
+        <item name="android:background">@drawable/edit_rounded_field</item>
+    </style>
+
 
 </resources>
