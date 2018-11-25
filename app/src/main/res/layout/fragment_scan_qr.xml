@@ -5,10 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".ScanQRFragment">
 
-    <TextView
+    <com.budiyev.android.codescanner.CodeScannerView
+        android:id="@+id/scanner_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/title_qr_scanner" />
+        autoFocusButtonColor="@android:color/white"
+        autoFocusButtonVisible="true"
+        flashButtonColor="@android:color/white"
+        flashButtonVisible="true"
+        frameColor="@android:color/white"
+        frameCornersSize="50dp"
+        frameAspectRatioWidth="1"
+        frameAspectRatioHeight="1"
+        frameSize="0.75"
+        frameThickness="2dp"
+        maskColor="#77000000"/>
 
 </FrameLayout>
