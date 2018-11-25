@@ -34,8 +34,7 @@ public class ScanQRFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_scan_qr, container, false);
-        final Activity activity = getActivity();
+        final MainActivity activity = (MainActivity) getActivity();
         View root = inflater.inflate(R.layout.fragment_scan_qr, container, false);
 
         CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
@@ -47,9 +46,7 @@ public class ScanQRFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
-
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        mainActivity.navigation.setSelectedItemId(R.id.navigation_checks_list);
+                        activity.navigation.setSelectedItemId(R.id.navigation_checks_list);
                     }
                 });
             }
@@ -62,6 +59,7 @@ public class ScanQRFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkScanner.startPreview();
+//        TODO: check for permisson
 //        if (MainActivity.cameraPermission) {
 //            checkScanner.startPreview();
 //        }
