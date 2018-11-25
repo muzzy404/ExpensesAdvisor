@@ -11,4 +11,7 @@
     <string name="title_login">логин</string>
     <string name="title_password">пароль</string>
     <string name="title_login_button">войти</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

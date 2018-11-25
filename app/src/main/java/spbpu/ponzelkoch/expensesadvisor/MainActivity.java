@@ -5,32 +5,39 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
     private String username;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            boolean result = false;
+
             switch (item.getItemId()) {
                 case R.id.navigation_checks_list:
-                    mTextMessage.setText(R.string.title_checks_list);
-                    return true;
+                    setFragment(new ChecksFragment());
+                    break;
                 case R.id.navigation_qr_scanner:
-                    mTextMessage.setText(R.string.title_qr_scanner);
-                    return true;
+                    setFragment(new ScanQRFragment());
+                    result = true;
+                    break;
                 case R.id.navigation_statistics:
-                    mTextMessage.setText(R.string.title_statistics);
-                    return true;
+                    setFragment(new StatisticsFragment());
+                    result = true;
+                    break;
             }
-            return false;
+
+            return result;
         }
     };
 
@@ -42,11 +49,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(LoginActivity.USERNAME);
 
-        mTextMessage = findViewById(R.id.message);
         BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        setFragment(new ChecksFragment());
 
         Toast.makeText(this, username, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_container,
+                                                               fragment).commit();
     }
 
 }
