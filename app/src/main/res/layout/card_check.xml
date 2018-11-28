@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/check_card_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/CheckCardStyle"
+                android:layout_weight="1"
+                android:text="@string/sample_check_date"/>
+
+            <TextView
+                style="@style/CheckCardStyle"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:text="@string/sample_check_sum"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_place_gray_24dp"
+            android:gravity="center_vertical"
+            android:text="@string/sample_check_place"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
