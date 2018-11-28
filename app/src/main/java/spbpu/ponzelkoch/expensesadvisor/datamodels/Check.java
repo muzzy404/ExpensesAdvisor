@@ -12,13 +12,16 @@ public class Check {
     private String sum;
 
     private static String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"; // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-    private SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
+    private static String DATETIME_TITLE = "EEE d MMM yyyy";
 
-    Check(int id, String date, String place, float sum) throws ParseException {
+    private SimpleDateFormat toDateFormatter = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
+    private SimpleDateFormat toTitleFormatter = new SimpleDateFormat("EEE d MMM yyyy");
+
+    public Check(int id, String date, String place, double sum) throws ParseException {
         this.id = id;
-        this.date = formatter.parse(date);  // date sample: "2018-11-28T11:54:22.047Z"
+        this.date = toDateFormatter.parse(date);  // date sample: "2018-11-28T11:54:22.047Z"
         this.place = place;
-        this.sum = String.format("%.2f", sum);
+        this.sum = String.format(Locale.US, "%.2f", sum);
     }
 
     public int getId() {
@@ -35,5 +38,9 @@ public class Check {
 
     public String getSum() {
         return sum;
+    }
+
+    public String getDateString() {
+        return toTitleFormatter.format(date);
     }
 }
