@@ -5,20 +5,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class CheckRoot {
+public class Check {
     private int id;
     private Date date;
     private String place;
-    private int sum;
+    private String sum;
 
-    private static String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private static String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"; // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     private SimpleDateFormat formatter = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
 
-    CheckRoot(int id, String date, String place, int sum) throws ParseException {
+    Check(int id, String date, String place, float sum) throws ParseException {
         this.id = id;
         this.date = formatter.parse(date);  // date sample: "2018-11-28T11:54:22.047Z"
         this.place = place;
-        this.sum = sum;
+        this.sum = String.format("%.2f", sum);
     }
 
     public int getId() {
@@ -33,7 +33,7 @@ public class CheckRoot {
         return place;
     }
 
-    public int getSum() {
+    public String getSum() {
         return sum;
     }
 }
