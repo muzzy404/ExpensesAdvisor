@@ -29,8 +29,9 @@ public class CheckItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_items);
 
         categorySpinner = findViewById(R.id.common_category_spinner);
-        checkTitle = findViewById(R.id.ites_list_check_title);
+        checkTitle = findViewById(R.id.items_list_check_title);
 
+        // TODO: set sum or place to title???
         Intent intent = getIntent();
         checkTitle.setText(intent.getStringExtra(ChecksFragment.CHECK_TITLE));
 

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/check_card_padding">
+        android:padding="@dimen/card_padding_big">
 
         <LinearLayout
             android:layout_width="match_parent"

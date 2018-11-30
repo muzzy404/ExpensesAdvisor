@@ -8,37 +8,46 @@
     android:orientation="vertical"
     tools:context=".CheckItemsActivity">
 
-    <TextView
-        style="@style/CustomTitleStyle"
-        android:id="@+id/ites_list_check_title"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingTop="@dimen/check_card_padding"
-        android:paddingBottom="@dimen/check_card_padding"
-        android:text="@string/sample_check_date" />
-
-    <TextView
-        style="@style/CustomTitleStyle"
-        android:text="@string/title_set_common_category"/>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/check_card_padding"
-        android:layout_marginEnd="@dimen/check_card_padding"
-        android:background="@drawable/edit_rounded_field">
-        <Spinner
-            android:id="@+id/common_category_spinner"
+        android:background="@color/color_white"
+        android:elevation="@dimen/card_elevation_medium"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/CustomTitleStyle"
+            android:id="@+id/items_list_check_title"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/card_padding_big"
+            android:paddingBottom="@dimen/card_padding_medium"
+            android:text="@string/sample_check_date" />
+
+        <TextView
+            style="@style/CustomTitleStyle"
+            android:text="@string/title_set_common_category"/>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+            android:layout_height="@dimen/spinner_spinner_height"
+            android:layout_marginStart="@dimen/card_padding_big"
+            android:layout_marginEnd="@dimen/card_padding_big"
+            android:layout_marginBottom="@dimen/card_padding_small"
+            android:background="@drawable/edit_rounded_field">
+            <Spinner
+                android:id="@+id/common_category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/items_recycle_view"
         android:scrollbars="vertical"
-        android:paddingTop="@dimen/check_card_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
