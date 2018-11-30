@@ -10,7 +10,10 @@
 
     <TextView
         style="@style/CustomTitleStyle"
+        android:id="@+id/ites_list_check_title"
         android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:paddingTop="@dimen/check_card_padding"
         android:paddingBottom="@dimen/check_card_padding"
         android:text="@string/sample_check_date" />
@@ -28,7 +31,7 @@
         <Spinner
             android:id="@+id/common_category_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

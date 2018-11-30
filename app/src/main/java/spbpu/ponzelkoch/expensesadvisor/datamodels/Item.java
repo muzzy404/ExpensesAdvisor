@@ -9,7 +9,7 @@ public class Item {
     private double quantity;
     private String category;
 
-    public Item(int id, String name, double sum, float quantity, String category) {
+    public Item(int id, String name, double sum, double quantity, String category) {
         this.id = id;
         this.name = name;
         this.sum = sum;

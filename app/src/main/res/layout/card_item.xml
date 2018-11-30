@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/check_card"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_card"
     android:clickable="true"
     android:focusable="true">
 
@@ -21,15 +22,14 @@
             <TextView
                 android:id="@+id/item_card_name"
                 style="@style/CheckCardStyle"
-                android:textStyle="bold"
                 android:layout_weight="1"
                 android:text="@string/sample_item_name"/>
 
             <TextView
                 android:id="@+id/item_card_sum"
                 style="@style/CheckCardStyle"
-                android:layout_weight="2"
-                android:layout_gravity="center_vertical"
+                android:layout_weight="4"
+                android:layout_gravity="top"
                 android:gravity="end"
                 android:text="@string/sample_item_sum"/>
 
@@ -43,21 +43,20 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/edit_rounded_field">
-
                 <Spinner
                     android:id="@+id/item_card_category_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="25dp"
                     android:backgroundTint="@color/color_primary_dark"
                     android:spinnerMode="dropdown" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/item_quantity"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 android:gravity="end"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

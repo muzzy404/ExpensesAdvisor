@@ -1,6 +1,7 @@
 package spbpu.ponzelkoch.expensesadvisor;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
  * A simple {@link Fragment} subclass.
  */
 public class ChecksFragment extends Fragment implements ChecksListAdapter.ChecksFragmentCallback {
+
+    public static String CHECK_TITLE = "check title";
 
     private ArrayList<Check> checks;
     private RecyclerView recyclerView;
@@ -59,9 +62,11 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
     }
 
     @Override
-    public void onCardClick(int id) {
-        // TODO: open edit activity for check
-        Toast.makeText(getContext(), Integer.toString(id), Toast.LENGTH_SHORT).show();
+    public void onCardClick(int id, String title) {
+        // Toast.makeText(getContext(), Integer.toString(id), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), CheckItemsActivity.class);
+        intent.putExtra(CHECK_TITLE, title);
+        startActivity(intent);
     }
 
     // TODO: remove later

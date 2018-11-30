@@ -35,7 +35,7 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
 
     @Override
     public void onBindViewHolder(@NonNull final ChecksViewHolder holder, int position) {
-        Check check = checks.get(position);
+        final Check check = checks.get(position);
 
         holder.date.setText(check.getDateString());
         holder.sum.setText(check.getSum());
@@ -44,7 +44,7 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment.onCardClick(holder.card.getId());
+                fragment.onCardClick(holder.card.getId(), check.getDateString());
             }
         });
     }
@@ -69,14 +69,14 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         ChecksViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            card = itemView.findViewById(R.id.check_card);
             date = itemView.findViewById(R.id.check_card_date);
             sum = itemView.findViewById(R.id.check_card_sum);
             place = itemView.findViewById(R.id.check_card_place_id);
-            card = itemView.findViewById(R.id.check_card);
         }
     }
 
     public interface ChecksFragmentCallback {
-        void onCardClick(final int id);
+        void onCardClick(final int id, final String title);
     }
 }
