@@ -1,10 +1,8 @@
 package spbpu.ponzelkoch.expensesadvisor.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -71,8 +69,8 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         ChecksViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            date = itemView.findViewById(R.id.check_card_date_id);
-            sum = itemView.findViewById(R.id.check_card_sum_id);
+            date = itemView.findViewById(R.id.check_card_date);
+            sum = itemView.findViewById(R.id.check_card_sum);
             place = itemView.findViewById(R.id.check_card_place_id);
             card = itemView.findViewById(R.id.check_card);
         }

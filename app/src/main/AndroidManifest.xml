@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="spbpu.ponzelkoch.expensesadvisor">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -22,9 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".CheckItemsActivity"></activity>
     </application>
 
 </manifest>

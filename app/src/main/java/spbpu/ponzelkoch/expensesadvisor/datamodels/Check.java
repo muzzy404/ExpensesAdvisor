@@ -9,7 +9,7 @@ public class Check {
     private int id;
     private Date date;
     private String place;
-    private String sum;
+    private double sum;
 
     private static String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"; // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     private static String DATETIME_TITLE = "EEE d MMM yyyy";
@@ -21,7 +21,7 @@ public class Check {
         this.id = id;
         this.date = toDateFormatter.parse(date);  // date sample: "2018-11-28T11:54:22.047Z"
         this.place = place;
-        this.sum = String.format(Locale.US, "%.2f", sum);
+        this.sum = sum;
     }
 
     public int getId() {
@@ -37,7 +37,7 @@ public class Check {
     }
 
     public String getSum() {
-        return sum;
+        return String.format(Locale.US, "%.2f", sum);
     }
 
     public String getDateString() {
