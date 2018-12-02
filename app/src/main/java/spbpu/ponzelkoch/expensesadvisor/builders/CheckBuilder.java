@@ -1,6 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor.datamodels;
-
-import android.os.Build;
+package spbpu.ponzelkoch.expensesadvisor.builders;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -8,7 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.RequiresApi;
+import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
+import spbpu.ponzelkoch.expensesadvisor.parsers.JsonParser;
+
 
 public class CheckBuilder {
 
@@ -18,7 +18,7 @@ public class CheckBuilder {
     private static final String SUM = "sum";
     private static final List<String> KEYS = Arrays.asList(ID, DATE, SHOP, SUM);
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    // TODO: return ArrayList of checks from json (in one json can be more than one check!!!)
     public static Check buildFromJson(final String json) throws IOException, ParseException {
         final Map<String, String> map = new JsonParser().parseToMap(json);
         if (!isValid(map)) {
@@ -31,7 +31,6 @@ public class CheckBuilder {
                 Double.valueOf(map.get(SUM)));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private static boolean isValid(final Map map) {
         return map.keySet().containsAll(KEYS);
     }

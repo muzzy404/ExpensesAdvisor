@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor.datamodels;
+package spbpu.ponzelkoch.expensesadvisor.parsers;
 
 import android.os.Build;
 
@@ -22,12 +22,14 @@ public class JsonParser
     //t=...&s=...&fn=...&i=...&fp=...&n=...
     private List<String> requiredFields = Arrays.asList("t", "s", "fn", "i", "fp");
 
+    // TODO: remove lambda, change to Build.VERSION_CODES.M or remove RequiresApi at all
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public String parseToJson(final String line, final List<String> requiredFields)
             throws IOException {
         final Map<String, String> items = new HashMap<>();
         this.requiredFields = requiredFields;
+        // TODO: do not use lambda and streams!
         try {
             Arrays.asList(line.split("&"))
                     .forEach(item -> {
@@ -46,6 +48,7 @@ public class JsonParser
         return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(items);
     }
 
+    // TODO: change to Build.VERSION_CODES.M or remove RequiresApi at all
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public String parseToJson(final String line)

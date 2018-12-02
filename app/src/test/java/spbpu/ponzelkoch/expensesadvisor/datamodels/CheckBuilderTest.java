@@ -3,8 +3,7 @@ package spbpu.ponzelkoch.expensesadvisor.datamodels;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.text.ParseException;
+import spbpu.ponzelkoch.expensesadvisor.builders.CheckBuilder;
 
 
 public class CheckBuilderTest {

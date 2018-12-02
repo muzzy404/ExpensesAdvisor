@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.0'
+    implementation group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.1.0-alpha01'

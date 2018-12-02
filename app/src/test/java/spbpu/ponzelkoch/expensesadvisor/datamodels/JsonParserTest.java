@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import spbpu.ponzelkoch.expensesadvisor.parsers.JsonParser;
+
 /**
  @author veronika K. on 29.11.18 */
 public class JsonParserTest {

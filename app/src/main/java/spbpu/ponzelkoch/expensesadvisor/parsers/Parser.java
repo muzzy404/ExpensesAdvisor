@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor.datamodels;
+package spbpu.ponzelkoch.expensesadvisor.parsers;
 
 import java.io.IOException;
 import java.util.List;
