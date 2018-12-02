@@ -4,6 +4,7 @@ import android.os.Build;
 
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,44 +17,53 @@ import androidx.annotation.RequiresApi;
 /**
  * @author veronika K. on 26.11.18
  */
-public class JsonParser
-        implements Parser {
+public class JsonParser implements Parser {
 
     //t=...&s=...&fn=...&i=...&fp=...&n=...
     private List<String> requiredFields = Arrays.asList("t", "s", "fn", "i", "fp");
 
-    // TODO: remove lambda, change to Build.VERSION_CODES.M or remove RequiresApi at all
-    @RequiresApi(api = Build.VERSION_CODES.N)
+// TODO: remove old methods
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    @Override
+//    public String parseToJson(final String line, final List<String> requiredFields)
+//            throws IOException {
+//        final Map<String, String> items = new HashMap<>();
+//        this.requiredFields = requiredFields;
+//        try {
+//            Arrays.asList(line.split("&"))
+//                    .forEach(item -> {
+//                        final String k = item.split("=")[0];
+//                        final String v = item.split("=")[1];
+//                        if (requiredFields.contains(k)) {
+//                            items.put(k, v);
+//                        }
+//                    });
+//        } catch (final IndexOutOfBoundsException ex) {
+//            throw new AssertionError("Illegal line: \"" + line + "\"");
+//        }
+//        if (!isValid(items)) {
+//            throw new AssertionError("Illegal line: \"" + line + "\"\n" + "CAUSE: Not enough fields");
+//        }
+//        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(items);
+//    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    @Override
+//    public String parseToJson(final String line)
+//            throws IOException {
+//        return parseToJson(line, requiredFields);
+//    }
+
+    // TODO: implement with returning JSONObject
     @Override
-    public String parseToJson(final String line, final List<String> requiredFields)
-            throws IOException {
-        final Map<String, String> items = new HashMap<>();
-        this.requiredFields = requiredFields;
-        // TODO: do not use lambda and streams!
-        try {
-            Arrays.asList(line.split("&"))
-                    .forEach(item -> {
-                        final String k = item.split("=")[0];
-                        final String v = item.split("=")[1];
-                        if (requiredFields.contains(k)) {
-                            items.put(k, v);
-                        }
-                    });
-        } catch (final IndexOutOfBoundsException ex) {
-            throw new AssertionError("Illegal line: \"" + line + "\"");
-        }
-        if (!isValid(items)) {
-            throw new AssertionError("Illegal line: \"" + line + "\"\n" + "CAUSE: Not enough fields");
-        }
-        return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(items);
+    public JSONObject parseToJson(String line, List<String> requiredFields) {
+        return null;
     }
 
-    // TODO: change to Build.VERSION_CODES.M or remove RequiresApi at all
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    // TODO: implement with returning JSONObject
     @Override
-    public String parseToJson(final String line)
-            throws IOException {
-        return parseToJson(line, requiredFields);
+    public JSONObject parseToJson(String line) {
+        return null;
     }
 
     @Override
