@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor.datamodels;
+package spbpu.ponzelkoch.expensesadvisor.tests;
 
 import org.json.JSONException;
 import org.junit.Assert;

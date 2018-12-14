@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor.datamodels;
+package spbpu.ponzelkoch.expensesadvisor.tests;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
+import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 
 public class BuildersTests {
 
