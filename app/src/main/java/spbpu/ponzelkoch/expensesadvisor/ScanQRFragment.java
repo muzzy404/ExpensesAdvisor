@@ -1,7 +1,8 @@
 package spbpu.ponzelkoch.expensesadvisor;
 
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,8 +12,6 @@ import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
-import com.budiyev.android.codescanner.DecodeCallback;
-import com.google.zxing.Result;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
@@ -22,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import cz.msebera.android.httpclient.Header;
 import spbpu.ponzelkoch.expensesadvisor.helpers.CommonHelper;
@@ -48,50 +48,50 @@ public class ScanQRFragment extends Fragment {
 
         CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
         checkScanner = new CodeScanner(activity, scannerView);
-        checkScanner.setDecodeCallback(new DecodeCallback() {
-            @Override
-            public void onDecoded(@NonNull final Result result) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            // getting json from QR code string
-                            JSONObject json = CommonHelper.QRStringToJSON(result.getText());
-                            Toast.makeText(activity, json.toString(), Toast.LENGTH_LONG).show();
-                            Log.d("DebugSendQR", json.toString(1));
+        checkScanner.setDecodeCallback(result -> activity.runOnUiThread(() -> {
+            try {
+                // getting json from QR code string
+                JSONObject json = CommonHelper.QRStringToJSON(result.getText());
+                Toast.makeText(activity, json.toString(), Toast.LENGTH_LONG).show();
+                Log.d("DebugSendQR", json.toString(1));
 
+                try {
+                    RestClient.post(activity, RestClient.SEND_QR_URL, json,
+                                    activity.getUsername(), activity.getPassword(),
+                                    new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            // TODO: messages from statusCode
+                            String message = "success";
                             try {
-                                RestClient.post(activity, RestClient.SEND_QR_URL, json,
-                                                activity.getUsername(), activity.getPassword(),
-                                                new JsonHttpResponseHandler() {
-                                    @Override
-                                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                        Log.d("DebugSendQR", response.toString());
-                                    }
-
-                                    @Override
-                                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                        try {
-                                            Log.d("DebugSendQR", errorResponse.toString());
-                                        } catch (Exception e) {
-                                            Log.d("DebugSendQR", "null response: " + e.getMessage());
-                                        }
-
-                                    }
-                                });
-                            } catch (UnsupportedEncodingException e) {
-                                Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-
-                        } catch (JSONException e) {
-                            Toast.makeText(activity, QR_PARSING_FAIL, Toast.LENGTH_LONG).show();
+                                message = response.getString("message");
+                            } catch (JSONException ignored) { }
+                            Log.d("DebugSendQR", response.toString());
+                            showAlert(activity, "Success", message);
                         }
-                        // go back to Checks List Fragment
-                        activity.navigation.setSelectedItemId(R.id.navigation_checks_list);
-                    }
-                });
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            // TODO: messages from statusCode
+                            String failMessage;
+                            try {
+                                failMessage = errorResponse.toString();
+                            } catch (Exception e) {
+                                failMessage = e.getMessage();
+                            }
+                            Log.d("DebugSendQR", failMessage);
+                            showAlert(activity, "Fail", failMessage);
+                        }
+                    });
+                } catch (UnsupportedEncodingException e) {
+                    Log.d("DebugSendQR", e.getMessage());
+                }
+            } catch (JSONException e) {
+                showAlert(activity, "Fail", QR_PARSING_FAIL);
             }
-        });
+            // go back to Checks List Fragment
+            activity.navigation.setSelectedItemId(R.id.navigation_checks_list);
+        }));
 
         return root;
     }
@@ -110,6 +110,18 @@ public class ScanQRFragment extends Fragment {
     public void onPause() {
         checkScanner.releaseResources();
         super.onPause();
+    }
+
+    private void showAlert(Context context, String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
 }
