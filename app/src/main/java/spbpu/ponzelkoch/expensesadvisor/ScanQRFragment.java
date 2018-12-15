@@ -88,6 +88,8 @@ public class ScanQRFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 showAlert(activity, "Fail", QR_PARSING_FAIL);
+            } catch (Exception e) {
+                showAlert(activity, "Fail", e.getMessage());
             }
             // go back to Checks List Fragment
             activity.navigation.setSelectedItemId(R.id.navigation_checks_list);

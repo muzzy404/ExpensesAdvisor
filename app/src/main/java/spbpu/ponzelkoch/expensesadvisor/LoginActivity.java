@@ -53,37 +53,48 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void login() throws JSONException, UnsupportedEncodingException {
+    protected void login() {
         final String username = usernameField.getText().toString();
         final String password = passwordField.getText().toString();
 
         JSONObject json = new JSONObject();
-        json.put("username", username);
-        json.put("password", password);
-        Log.d("DebugLogin", json.toString());
+        try {
+            json.put("username", username);
+            json.put("password", password);
+            Log.d("DebugLogin", json.toString());
+        } catch (JSONException e) {
+            Log.d("DebugLogin", "json creation failed");
+            return;
+        }
 
-        LoginActivity context = this;
-
-        RestClient.post(this, RestClient.LOGIN_URL, json, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    response.get("message");
-                    Intent intent = new Intent(context, MainActivity.class);
-                    intent.putExtra(USERNAME, username);
-                    intent.putExtra(PASSWORD, password);
-                    startActivity(intent);
-                } catch (JSONException e) {
-                    Toast.makeText(context, "login failed", Toast.LENGTH_SHORT).show();
+        try {
+            LoginActivity context = this;
+            RestClient.post(this, RestClient.LOGIN_URL, json, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        response.get("message");
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.putExtra(USERNAME, username);
+                        intent.putExtra(PASSWORD, password);
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        Toast.makeText(context, "login failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DebugLogin", errorResponse.toString());
-                Toast.makeText(context, errorResponse.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("DebugLogin", errorResponse.toString());
+                    Toast.makeText(context, errorResponse.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            String failMsg = String.format("login failed: %s", e.getMessage());
+            Log.d("DebugLogin", failMsg);
+            Toast.makeText(this, failMsg, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }
