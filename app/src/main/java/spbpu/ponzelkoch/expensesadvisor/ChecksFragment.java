@@ -19,9 +19,6 @@ import spbpu.ponzelkoch.expensesadvisor.adapters.ChecksListAdapter;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ChecksFragment extends Fragment implements ChecksListAdapter.ChecksFragmentCallback {
 
     public static String CHECK_TITLE = "check title";

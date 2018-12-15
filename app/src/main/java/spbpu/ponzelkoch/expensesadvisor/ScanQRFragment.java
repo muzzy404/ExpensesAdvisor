@@ -28,9 +28,6 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.CommonHelper;
 import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ScanQRFragment extends Fragment {
 
     private CodeScanner checkScanner;
