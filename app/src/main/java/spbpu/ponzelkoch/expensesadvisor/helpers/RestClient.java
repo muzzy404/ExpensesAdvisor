@@ -11,19 +11,17 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class RestClient {
 
     public static final String LOGIN_URL = "/user/login";
-
+    public static final String SEND_QR_URL = "/sendQRcode";
     private static final String BASE_URL = "https://expenses-advisor.herokuapp.com";
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
-
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
@@ -31,7 +29,21 @@ public class RestClient {
 //        client.post(getAbsoluteUrl(url), params, responseHandler);
 //    }
 
-    public static void post(Context context, String url, JSONObject json, ResponseHandlerInterface responseHandler) throws UnsupportedEncodingException {
+    public static void post(Context context, String url, JSONObject json, ResponseHandlerInterface responseHandler)
+            throws UnsupportedEncodingException {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        String contentType = "application/json";
+        StringEntity entity = new StringEntity(json.toString());
+        client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
+    }
+
+    public static void post(Context context, String url, JSONObject json,
+                            String username, String password, ResponseHandlerInterface responseHandler)
+            throws UnsupportedEncodingException {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setBasicAuth(username, password);
+
         String contentType = "application/json";
         StringEntity entity = new StringEntity(json.toString());
         client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);

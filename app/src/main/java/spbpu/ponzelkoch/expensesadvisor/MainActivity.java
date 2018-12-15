@@ -20,10 +20,20 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private String username;
+    private String password;
+
     private final int CAMERA_PERMISSION = 10;
     public static boolean cameraPermission = false;
 
     public BottomNavigationView navigation;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -33,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra(LoginActivity.USERNAME);
+        password = intent.getStringExtra(LoginActivity.PASSWORD);
 
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -53,30 +64,25 @@ public class MainActivity extends AppCompatActivity {
                                                                fragment).commit();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = item -> {
+                boolean result = false;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            boolean result = false;
+                switch (item.getItemId()) {
+                    case R.id.navigation_checks_list:
+                        setFragment(new ChecksFragment());
+                        result = true;
+                        break;
+                    case R.id.navigation_qr_scanner:
+                        setFragment(new ScanQRFragment());
+                        result = true;
+                        break;
+                    case R.id.navigation_statistics:
+                        setFragment(new StatisticsFragment());
+                        result = true;
+                        break;
+                }
 
-            switch (item.getItemId()) {
-                case R.id.navigation_checks_list:
-                    setFragment(new ChecksFragment());
-                    result = true;
-                    break;
-                case R.id.navigation_qr_scanner:
-                    setFragment(new ScanQRFragment());
-                    result = true;
-                    break;
-                case R.id.navigation_statistics:
-                    setFragment(new StatisticsFragment());
-                    result = true;
-                    break;
-            }
-
-            return result;
-        }
-    };
+                return result;
+            };
 
 }

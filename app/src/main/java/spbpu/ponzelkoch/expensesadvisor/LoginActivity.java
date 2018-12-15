@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText usernameField;
     EditText passwordField;
 
-    private final int INTERNET_PERMISSION = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.INTERNET}, INTERNET_PERMISSION);
-            }
-        }
     }
 
     protected void login() throws JSONException, UnsupportedEncodingException {
@@ -93,4 +85,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }
