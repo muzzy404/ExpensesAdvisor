@@ -1,5 +1,6 @@
 package spbpu.ponzelkoch.expensesadvisor.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 
 
 public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.ChecksViewHolder> {
+
+    private static final String DEBUG_TAG = "DebugCardsAdapter";
 
     private ArrayList<Check> checks;
     private ChecksFragment fragment;
@@ -40,13 +43,10 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         holder.date.setText(check.getDateString());
         holder.sum.setText(check.getSum());
         holder.place.setText(check.getPlace());
+        if (position == (checks.size() - 1))
+            holder.divider.setVisibility(View.INVISIBLE);
 
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment.onCardClick(holder.card.getId(), check.getDateString());
-            }
-        });
+        holder.card.setOnClickListener(v -> fragment.onCardClick(holder.card.getId(), check.getDateString()));
     }
 
     @Override
@@ -65,6 +65,7 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         private TextView date;
         private TextView sum;
         private TextView place;
+        private View divider;
 
         ChecksViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,10 +74,16 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
             date = itemView.findViewById(R.id.check_card_date);
             sum = itemView.findViewById(R.id.check_card_sum);
             place = itemView.findViewById(R.id.check_card_place_id);
+            divider = itemView.findViewById(R.id.check_card_divider);
         }
     }
 
     public interface ChecksFragmentCallback {
         void onCardClick(final int id, final String title);
+    }
+
+    public void newChecks(ArrayList<Check> checks) {
+        this.checks = checks;
+        notifyDataSetChanged();
     }
 }

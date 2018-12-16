@@ -7,6 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -15,17 +21,30 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import cz.msebera.android.httpclient.Header;
 import spbpu.ponzelkoch.expensesadvisor.adapters.ChecksListAdapter;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
+import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
+import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 
 public class ChecksFragment extends Fragment implements ChecksListAdapter.ChecksFragmentCallback {
 
     public static String CHECK_TITLE = "check title";
 
-    private ArrayList<Check> checks;
+    private final String SUCCESS = "Успешно";
+    private final String FAIL = "Ошибка";
+
+    private final String GET_CHECKS_FAIL = "Ошибка при получнии списка чеков с сервреа";
+    private final String GET_CHECKS_SUCCESS = "Чеки успешно загружены";
+    private final String CHECKS_PARSING_FAIL = "Ошибка при парсинге списка чеков с сервреа (1)";
+
+    private ArrayList<Check> checks = new ArrayList<>();
+
     private RecyclerView recyclerView;
     private ChecksListAdapter adapter;
+
+    private static final String DEBUG_TAG = "DebugChecks";
 
     public ChecksFragment() {
         // Required empty public constructor
@@ -34,14 +53,8 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: change to request for real checks
-        try {
-            checks = getTestChecksSet();
-        } catch (ParseException e) {
-            Log.d("ERROR", e.getMessage());
-        }
+        getChecksFromServer();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,9 +62,10 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_checks, container, false);
 
+        adapter = new ChecksListAdapter(checks, this);
         recyclerView = view.findViewById(R.id.checks_recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new ChecksListAdapter(checks, this));
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -80,5 +94,37 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
         checks.add(new Check(111, "2018-14-29T11:34:32", "Place 10", 45.56));
 
         return checks;
+    }
+
+    private void getChecksFromServer() {
+        final MainActivity activity = (MainActivity) getActivity();
+        Log.d(DEBUG_TAG, "getChecksFromServer");
+
+        RestClient.get(RestClient.RECENT_CHECKS_URL,
+                       activity.getUsername(), activity.getPassword(),
+                       new JsonHttpResponseHandler() {
+
+                           @Override
+                           public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                               Log.d(DEBUG_TAG, "got checks JSONObject");
+                               Log.d(DEBUG_TAG, response.toString());
+                               try {
+                                   checks = ModelsBuilder.buildChecksFromJSON(response);
+                                   adapter.newChecks(checks);
+                                   Log.d(DEBUG_TAG, GET_CHECKS_SUCCESS);
+                                   Toast.makeText(activity, GET_CHECKS_SUCCESS, Toast.LENGTH_SHORT).show();
+                               } catch (JSONException | ParseException e) {
+                                   Log.d(DEBUG_TAG, e.getMessage());
+                                   Toast.makeText(activity, CHECKS_PARSING_FAIL, Toast.LENGTH_SHORT).show();
+                               }
+                               Log.d(DEBUG_TAG, "parsing finished");
+                           }
+
+                           @Override
+                           public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                               Log.d(DEBUG_TAG, GET_CHECKS_FAIL);
+                               Toast.makeText(activity, GET_CHECKS_FAIL, Toast.LENGTH_SHORT).show();
+                           }
+                       });
     }
 }

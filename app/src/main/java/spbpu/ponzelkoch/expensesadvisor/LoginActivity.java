@@ -4,13 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import cz.msebera.android.httpclient.Header;
 import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,9 +24,12 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
+    private static final String LOGIN_FAILED = "login failed: %s";
+
     EditText usernameField;
     EditText passwordField;
 
+    public static final String DEBUG_TAG = "DebugLogin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +58,13 @@ public class LoginActivity extends AppCompatActivity {
 
         JSONObject json = new JSONObject();
         try {
-            json.put("username", username);
-            json.put("password", password);
-            Log.d("DebugLogin", json.toString());
+            json.put(USERNAME, username);
+            json.put(PASSWORD, password);
+            Log.d(DEBUG_TAG, json.toString());
         } catch (JSONException e) {
-            Log.d("DebugLogin", "json creation failed");
+            final String failMessage = "json creation failed";
+            Log.d(DEBUG_TAG, failMessage);
+            Toast.makeText(this, failMessage, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -72,27 +73,23 @@ public class LoginActivity extends AppCompatActivity {
             RestClient.post(this, RestClient.LOGIN_URL, json, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    try {
-                        response.get("message");
-                        Intent intent = new Intent(context, MainActivity.class);
-                        intent.putExtra(USERNAME, username);
-                        intent.putExtra(PASSWORD, password);
-                        startActivity(intent);
-                    } catch (JSONException e) {
-                        Toast.makeText(context, "login failed", Toast.LENGTH_SHORT).show();
-                    }
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra(USERNAME, username);
+                    intent.putExtra(PASSWORD, password);
+                    startActivity(intent);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d("DebugLogin", errorResponse.toString());
-                    Toast.makeText(context, errorResponse.toString(), Toast.LENGTH_SHORT).show();
+                    String failMessage = String.format(LOGIN_FAILED, errorResponse.toString());
+                    Log.d(DEBUG_TAG, failMessage);
+                    Toast.makeText(context, failMessage, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            String failMsg = String.format("login failed: %s", e.getMessage());
-            Log.d("DebugLogin", failMsg);
-            Toast.makeText(this, failMsg, Toast.LENGTH_SHORT).show();
+            String failMessage = String.format(LOGIN_FAILED, e.getMessage());
+            Log.d(DEBUG_TAG, failMessage);
+            Toast.makeText(this, failMessage, Toast.LENGTH_SHORT).show();
         }
 
     }

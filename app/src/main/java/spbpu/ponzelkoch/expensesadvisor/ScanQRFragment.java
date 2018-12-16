@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -32,7 +31,18 @@ public class ScanQRFragment extends Fragment {
 
     private CodeScanner checkScanner;
 
-    private final String QR_PARSING_FAIL = "QR code content parsing failed";
+    private final String SUCCESS = "Успешно";
+    private final String FAIL = "Ошибка";
+
+    private final String QR_PARSING_FAIL = "Ошибка при распознании QR кода чека";
+    private final String QR_PARSING_SUCCESS = "QR код чека успешно распознан";
+
+    private final String DEBUG_TAG = "DebugSendQR";
+
+    private final String RESPONSE_ON_201 = "Чек распознан и добавлен в вашу библиотеку";
+    private final String RESPONSE_ON_202 = "Чек не обнаружен на сервере ФНС, добавлен в список ожидания";
+    private final String RESPONSE_ON_406 = "Чек не обнаружен на сервере ФНС";
+    private final String RESPONSE_ON_FAIL = "Произошла ошибка при добавлении чека";
 
 
     public ScanQRFragment() {
@@ -52,7 +62,7 @@ public class ScanQRFragment extends Fragment {
             try {
                 // getting json from QR code string
                 JSONObject json = CommonHelper.QRStringToJSON(result.getText());
-                Toast.makeText(activity, json.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, QR_PARSING_SUCCESS, Toast.LENGTH_LONG).show();
                 Log.d("DebugSendQR", json.toString(1));
 
                 try {
@@ -61,36 +71,45 @@ public class ScanQRFragment extends Fragment {
                                     new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            // TODO: messages from statusCode
-                            String message = "success";
-                            try {
-                                message = response.getString("message");
-                            } catch (JSONException ignored) { }
-                            Log.d("DebugSendQR", response.toString());
-                            showAlert(activity, "Success", message);
+                            String message;
+                            switch (statusCode) {
+                                case 201:
+                                    message = RESPONSE_ON_201;
+                                    break;
+                                default:
+                                    message = SUCCESS;
+                            }
+                            Log.d(DEBUG_TAG, String.format("%d: %s", statusCode, response.toString()));
+                            showAlert(activity, SUCCESS, message);
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            // TODO: messages from statusCode
-                            String failMessage;
-                            try {
-                                failMessage = errorResponse.toString();
-                            } catch (Exception e) {
-                                failMessage = e.getMessage();
+                            String message;
+                            switch (statusCode) {
+                                case 202:
+                                    message = RESPONSE_ON_202;
+                                    break;
+                                case 406:
+                                    message = RESPONSE_ON_406;
+                                    break;
+                                default:
+                                    message = RESPONSE_ON_FAIL;
                             }
-                            Log.d("DebugSendQR", failMessage);
-                            showAlert(activity, "Fail", failMessage);
+                            Log.d(DEBUG_TAG, String.format("%d: %s", statusCode, FAIL));
+                            showAlert(activity, FAIL, message);
                         }
                     });
                 } catch (UnsupportedEncodingException e) {
-                    Log.d("DebugSendQR", e.getMessage());
+                    showAlert(activity, FAIL, e.getMessage());
+                    Log.d(DEBUG_TAG, e.getMessage());
                 }
             } catch (JSONException e) {
-                showAlert(activity, "Fail", QR_PARSING_FAIL);
+                showAlert(activity, FAIL, QR_PARSING_FAIL);
             } catch (Exception e) {
-                showAlert(activity, "Fail", e.getMessage());
+                showAlert(activity, FAIL, e.getMessage());
             }
+
             // go back to Checks List Fragment
             activity.navigation.setSelectedItemId(R.id.navigation_checks_list);
         }));
@@ -118,11 +137,7 @@ public class ScanQRFragment extends Fragment {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", (dialog, which) -> dialog.dismiss());
         alertDialog.show();
     }
 

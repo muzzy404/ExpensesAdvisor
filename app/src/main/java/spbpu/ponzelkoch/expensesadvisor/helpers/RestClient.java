@@ -15,21 +15,24 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class RestClient {
 
+    private static final String BASE_URL = "https://expenses-advisor.herokuapp.com";
+
     public static final String LOGIN_URL = "/user/login";
     public static final String SEND_QR_URL = "/sendQRcode";
-    private static final String BASE_URL = "https://expenses-advisor.herokuapp.com";
+    public static final String RECENT_CHECKS_URL = "/checks/getRecent";
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
-
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-//    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-//        client.post(getAbsoluteUrl(url), params, responseHandler);
-//    }
+    public static void get(String url, String username, String password, AsyncHttpResponseHandler responseHandler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setBasicAuth(username, password);
+        client.get(getAbsoluteUrl(url), responseHandler);
+    }
 
-    public static void post(Context context, String url, JSONObject json, ResponseHandlerInterface responseHandler)
+    public static void post(Context context, String url, JSONObject json, AsyncHttpResponseHandler responseHandler)
             throws UnsupportedEncodingException {
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -39,7 +42,7 @@ public class RestClient {
     }
 
     public static void post(Context context, String url, JSONObject json,
-                            String username, String password, ResponseHandlerInterface responseHandler)
+                            String username, String password, AsyncHttpResponseHandler responseHandler)
             throws UnsupportedEncodingException {
         AsyncHttpClient client = new AsyncHttpClient();
         client.setBasicAuth(username, password);
