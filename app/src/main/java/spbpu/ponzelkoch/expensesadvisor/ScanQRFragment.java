@@ -76,6 +76,9 @@ public class ScanQRFragment extends Fragment {
                                 case 201:
                                     message = RESPONSE_ON_201;
                                     break;
+                                case 202:
+                                    message = RESPONSE_ON_202;
+                                    break;
                                 default:
                                     message = SUCCESS;
                             }
@@ -87,9 +90,6 @@ public class ScanQRFragment extends Fragment {
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                             String message;
                             switch (statusCode) {
-                                case 202:
-                                    message = RESPONSE_ON_202;
-                                    break;
                                 case 406:
                                     message = RESPONSE_ON_406;
                                     break;
