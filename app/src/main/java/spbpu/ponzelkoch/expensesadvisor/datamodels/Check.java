@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 
-public class Check {
+public class Check implements Comparable<Check> {
     private long id;
     private Date date;
     private String place;
@@ -22,7 +22,7 @@ public class Check {
     public Check(long id, String date, String place, double sum) throws ParseException {
         this.id = id;
         this.date = toDateFormatter.parse(date);  // date sample: "2018-11-28T11:54:22.047Z"
-        this.place = place;
+        this.place = place.trim();
         this.sum = sum;
     }
 
@@ -52,4 +52,10 @@ public class Check {
         final String sep = " | ";
         return getId() + sep + getDateString() + sep + getPlace() + sep + getSum();
     }
+
+    @Override
+    public int compareTo(Check check) {
+        return check.getDate().compareTo(this.getDate());
+    }
+
 }

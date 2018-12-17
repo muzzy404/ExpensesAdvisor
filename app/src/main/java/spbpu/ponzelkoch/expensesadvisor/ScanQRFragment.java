@@ -42,6 +42,7 @@ public class ScanQRFragment extends Fragment {
     private final String RESPONSE_ON_201 = "Чек распознан и добавлен в вашу библиотеку";
     private final String RESPONSE_ON_202 = "Чек не обнаружен на сервере ФНС, добавлен в список ожидания";
     private final String RESPONSE_ON_406 = "Чек не обнаружен на сервере ФНС";
+    private final String RESPONSE_ON_504 = "Нет ответа от сервера";
     private final String RESPONSE_ON_FAIL = "Произошла ошибка при добавлении чека";
 
 
@@ -92,6 +93,9 @@ public class ScanQRFragment extends Fragment {
                             switch (statusCode) {
                                 case 406:
                                     message = RESPONSE_ON_406;
+                                    break;
+                                case 504:
+                                    message = RESPONSE_ON_504;
                                     break;
                                 default:
                                     message = RESPONSE_ON_FAIL;
