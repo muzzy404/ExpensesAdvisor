@@ -1,8 +1,10 @@
 package spbpu.ponzelkoch.expensesadvisor.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import spbpu.ponzelkoch.expensesadvisor.CheckItemsActivity;
+import spbpu.ponzelkoch.expensesadvisor.activities.CheckItemsActivity;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 import spbpu.ponzelkoch.expensesadvisor.R;
 
@@ -52,7 +54,21 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
                                                                  categories);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.categorySpinner.setAdapter(spinnerAdapter);
-        holder.categorySpinner.setSelection(categories.indexOf(item.getCategory()) - 1);
+        holder.categorySpinner.setSelection(categories.indexOf(item.getCategory()));
+
+        final int itemPosition = position;
+        holder.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private boolean firstSelection = true;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                activity.onItemCategorySelected(firstSelection, itemPosition, position);
+                firstSelection = false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
         // TODO: listener or something else for selection of items category
     }
@@ -89,4 +105,12 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         }
     }
 
+    public interface ItemCategoryCallback {
+        void onItemCategorySelected(boolean firstSelection, int itemPosition, int categoryPosition);
+    }
+
+    public void itemsChanges(ArrayList<Item> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
 }

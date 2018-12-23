@@ -20,6 +20,10 @@ public class Item {
         this.category = category;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public long getId() {
         return id;
     }

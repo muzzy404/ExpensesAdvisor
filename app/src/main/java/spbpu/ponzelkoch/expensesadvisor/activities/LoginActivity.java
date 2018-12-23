@@ -1,7 +1,8 @@
-package spbpu.ponzelkoch.expensesadvisor;
+package spbpu.ponzelkoch.expensesadvisor.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import cz.msebera.android.httpclient.Header;
+import spbpu.ponzelkoch.expensesadvisor.R;
 import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 import android.content.Intent;

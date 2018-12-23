@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor;
+package spbpu.ponzelkoch.expensesadvisor.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cz.msebera.android.httpclient.Header;
+import spbpu.ponzelkoch.expensesadvisor.R;
+import spbpu.ponzelkoch.expensesadvisor.activities.CheckItemsActivity;
+import spbpu.ponzelkoch.expensesadvisor.activities.LoginActivity;
+import spbpu.ponzelkoch.expensesadvisor.activities.MainActivity;
 import spbpu.ponzelkoch.expensesadvisor.adapters.ChecksListAdapter;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
@@ -31,9 +35,9 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 public class ChecksFragment extends Fragment implements ChecksListAdapter.ChecksFragmentCallback {
 
-    static String CHECK_TITLE_DATE = "check title date";
-    static String CHECK_TITLE_PLACE = "check title place";
-    static String CHECK_ID = "check title";
+    public static String CHECK_TITLE_DATE = "check title date";
+    public static String CHECK_TITLE_PLACE = "check title place";
+    public static String CHECK_ID = "check title";
 
     private final String GET_CHECKS_FAIL = "Ошибка при получнии списка чеков с сервреа";
     private final String GET_CHECKS_SUCCESS = "Чеки успешно загружены";
@@ -99,7 +103,7 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
                                Log.d(DEBUG_TAG, response.toString());
                                try {
                                    checks = ModelsBuilder.buildChecksFromJSON(response);
-                                   adapter.newChecks(checks);
+                                   adapter.checksChanges(checks);
                                    Log.d(DEBUG_TAG, GET_CHECKS_SUCCESS);
                                    Toast.makeText(activity, GET_CHECKS_SUCCESS, Toast.LENGTH_SHORT).show();
                                } catch (JSONException | ParseException e) {

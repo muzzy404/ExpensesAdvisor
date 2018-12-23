@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor;
+package spbpu.ponzelkoch.expensesadvisor.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import cz.msebera.android.httpclient.Header;
+import spbpu.ponzelkoch.expensesadvisor.R;
+import spbpu.ponzelkoch.expensesadvisor.activities.MainActivity;
 import spbpu.ponzelkoch.expensesadvisor.helpers.CommonHelper;
 import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 

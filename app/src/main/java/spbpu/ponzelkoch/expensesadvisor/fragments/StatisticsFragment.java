@@ -1,10 +1,11 @@
-package spbpu.ponzelkoch.expensesadvisor;
+package spbpu.ponzelkoch.expensesadvisor.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import spbpu.ponzelkoch.expensesadvisor.R;
 
 
 public class StatisticsFragment extends Fragment {

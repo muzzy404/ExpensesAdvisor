@@ -1,6 +1,5 @@
 package spbpu.ponzelkoch.expensesadvisor.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import spbpu.ponzelkoch.expensesadvisor.ChecksFragment;
+import spbpu.ponzelkoch.expensesadvisor.fragments.ChecksFragment;
 import spbpu.ponzelkoch.expensesadvisor.R;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 
@@ -81,7 +80,7 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         void onCardClick(final int id, final Check check);
     }
 
-    public void newChecks(ArrayList<Check> checks) {
+    public void checksChanges(ArrayList<Check> checks) {
         this.checks = checks;
         notifyDataSetChanged();
     }

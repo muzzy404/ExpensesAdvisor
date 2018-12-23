@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChecksFragment">
+    tools:context=".fragments.ChecksFragment">
 
     <ProgressBar
         android:id="@+id/checks_progress_bar"

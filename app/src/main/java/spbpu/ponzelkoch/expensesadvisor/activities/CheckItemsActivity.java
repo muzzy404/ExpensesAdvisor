@@ -1,9 +1,11 @@
-package spbpu.ponzelkoch.expensesadvisor;
+package spbpu.ponzelkoch.expensesadvisor.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cz.msebera.android.httpclient.Header;
+import spbpu.ponzelkoch.expensesadvisor.fragments.ChecksFragment;
+import spbpu.ponzelkoch.expensesadvisor.R;
 import spbpu.ponzelkoch.expensesadvisor.adapters.ItemsListAdapter;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -28,9 +31,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 
-public class CheckItemsActivity extends AppCompatActivity {
+public class CheckItemsActivity extends AppCompatActivity implements ItemsListAdapter.ItemCategoryCallback {
 
     private RecyclerView recyclerView;
+    private ItemsListAdapter itemsListAdapter;
     private Spinner categorySpinner;
     private TextView checkTitleDate;
     private TextView checkTitlePlace;
@@ -40,6 +44,7 @@ public class CheckItemsActivity extends AppCompatActivity {
     ArrayList<String> categories = new ArrayList<>();
 
     private long checkId;
+    private boolean categoriesChanged = false;
     private static long NO_ID = -1;
 
     private String username;
@@ -84,6 +89,12 @@ public class CheckItemsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(DEBUG_TAG, "onDestroy");
+    }
+
     /**
      * Method to load categories from server.
      * @param callback Callback to make next actions after getting of categories.
@@ -102,6 +113,7 @@ public class CheckItemsActivity extends AppCompatActivity {
                             categories);
                     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     categorySpinner.setAdapter(spinnerAdapter);
+                    categorySpinner.setOnItemSelectedListener(new OnCommonCategorySelected());
                 } catch (JSONException e) {
                     success = false;
                     Log.d(DEBUG_TAG, "Load categories parsing fail");
@@ -124,7 +136,8 @@ public class CheckItemsActivity extends AppCompatActivity {
             } else {
                 try {
                     items = ModelsBuilder.buildItemsFromJSON(response);
-                    recyclerView.setAdapter(new ItemsListAdapter(items, categories, context));
+                    itemsListAdapter = new ItemsListAdapter(items, categories, context);
+                    recyclerView.setAdapter(itemsListAdapter);
                 } catch (JSONException e) {
                     Log.d(DEBUG_TAG, "Load items parsing fail");
                 }
@@ -162,6 +175,41 @@ public class CheckItemsActivity extends AppCompatActivity {
                 callback.onJSONResponse(false, errorResponse);
             }
         });
+    }
+
+    class OnCommonCategorySelected implements AdapterView.OnItemSelectedListener {
+        private boolean firstSelection = true;
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (firstSelection) {
+                firstSelection = false;
+                return;
+            }
+            categoriesChanged = true;
+
+            final String selectedCategory = categories.get(position);
+            for(Item item: items) {
+                item.setCategory(selectedCategory);
+            }
+            itemsListAdapter.itemsChanges(items);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    }
+
+    @Override
+    public void onItemCategorySelected(boolean firstSelection, int itemPosition, int categoryPosition) {
+        if (firstSelection)
+            return;
+
+        categoriesChanged = true;
+        Item item = items.get(itemPosition);
+        String selectedCategory = categories.get(categoryPosition);
+        item.setCategory(selectedCategory);
+
+        Log.d(DEBUG_TAG, "Category: " + items.get(itemPosition).getCategory());
     }
 
 }

@@ -1,4 +1,4 @@
-package spbpu.ponzelkoch.expensesadvisor;
+package spbpu.ponzelkoch.expensesadvisor.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import spbpu.ponzelkoch.expensesadvisor.fragments.ChecksFragment;
+import spbpu.ponzelkoch.expensesadvisor.R;
+import spbpu.ponzelkoch.expensesadvisor.fragments.ScanQRFragment;
+import spbpu.ponzelkoch.expensesadvisor.fragments.StatisticsFragment;
 
 
 public class MainActivity extends AppCompatActivity {
