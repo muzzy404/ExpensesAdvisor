@@ -8,6 +8,7 @@ import spbpu.ponzelkoch.expensesadvisor.fragments.ChecksFragment;
 import spbpu.ponzelkoch.expensesadvisor.R;
 import spbpu.ponzelkoch.expensesadvisor.adapters.ItemsListAdapter;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
+import spbpu.ponzelkoch.expensesadvisor.helpers.CommonHelper;
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
 import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
@@ -91,8 +92,21 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         Log.d(DEBUG_TAG, "onDestroy");
+
+        // if no items, then categories couldn't be changed
+        if (categoriesChanged) {
+            try {
+                ArrayList<JSONObject> jsons = CommonHelper.getUpdateItemsCategoriesJSON(items);
+                for (JSONObject json : jsons) {
+                    Log.d(DEBUG_TAG, json.toString(1));
+                    // TODO: post to server
+                }
+            } catch (JSONException e) {
+                Log.d(DEBUG_TAG, "Failed to parse");
+            }
+        }
+        super.onDestroy();
     }
 
     /**

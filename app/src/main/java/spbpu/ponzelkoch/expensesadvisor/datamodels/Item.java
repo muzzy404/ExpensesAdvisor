@@ -5,7 +5,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 
 
-public class Item {
+public class Item implements Comparable<Item> {
     private long id;
     private String name;
     private double sum;
@@ -54,5 +54,10 @@ public class Item {
     public String toString() {
         final String sep = " | ";
         return getId() + sep + getName() + sep + getSum() + sep + getQuantity() + sep + getCategory();
+    }
+
+    @Override
+    public int compareTo(Item item) {
+        return item.getCategory().compareTo(this.getCategory());
     }
 }

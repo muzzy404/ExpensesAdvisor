@@ -1,7 +1,13 @@
 package spbpu.ponzelkoch.expensesadvisor.helpers;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 
 public class CommonHelper {
 
@@ -27,6 +33,39 @@ public class CommonHelper {
         }
 
         return result;
+    }
+
+    public static ArrayList<JSONObject> getUpdateItemsCategoriesJSON(ArrayList<Item> items)
+            throws JSONException {
+        final String CATEGORY_FILED = "category";
+        final String CATEGORY_IDS = "ids";
+
+        Collections.sort(items);
+        String currentCategory = items.get(0).getCategory();
+
+        ArrayList<JSONObject> jsons = new ArrayList<>();
+        JSONArray array = new JSONArray();
+
+        for(Item item: items) {
+            String itemCategory = item.getCategory();
+            if (!itemCategory.equals(currentCategory)) {
+                JSONObject json = new JSONObject();
+                json.put(CATEGORY_FILED, currentCategory);
+                json.put(CATEGORY_IDS, array);
+                jsons.add(json);
+
+                array = new JSONArray();
+                currentCategory = itemCategory;
+            }
+            array.put(item.getId());
+        }
+        // last json
+        JSONObject json = new JSONObject();
+        json.put(CATEGORY_FILED, currentCategory);
+        json.put(CATEGORY_IDS, array);
+        jsons.add(json);
+
+        return jsons;
     }
 
 }
