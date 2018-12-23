@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 
+
 public class Check implements Comparable<Check> {
     private long id;
     private Date date;
@@ -17,7 +18,7 @@ public class Check implements Comparable<Check> {
     private static String DATETIME_TITLE = "EEE d MMM yyyy";
 
     private SimpleDateFormat toDateFormatter = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
-    private SimpleDateFormat toTitleFormatter = new SimpleDateFormat("EEE d MMM yyyy");
+    private SimpleDateFormat toTitleFormatter = new SimpleDateFormat("d MMMM yyyy, EEE, HH:mm", Locale.getDefault());
 
     public Check(long id, String date, String place, double sum) throws ParseException {
         this.id = id;

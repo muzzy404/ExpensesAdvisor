@@ -1,68 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/item_card"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/card_padding_big">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/card_padding_small"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding_big">
 
-            <TextView
-                android:id="@+id/item_card_name"
-                style="@style/CheckCardStyle"
-                android:layout_weight="1"
-                android:text="@string/sample_item_name"/>
-
-            <TextView
-                android:id="@+id/item_card_sum"
-                style="@style/CheckCardStyle"
-                android:layout_weight="4"
-                android:layout_gravity="top"
-                android:gravity="end"
-                android:text="@string/sample_item_sum"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/spinner_spinner_height"
-                android:layout_weight="1"
-                android:background="@drawable/edit_rounded_field">
-                <Spinner
-                    android:id="@+id/item_card_category_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="@color/color_primary_dark"
-                    android:spinnerMode="dropdown" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/item_quantity"
-                android:layout_weight="4"
-                android:gravity="end"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sample_item_quantity"/>
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/card_padding_small">
+
+                <TextView
+                    android:id="@+id/item_card_name"
+                    style="@style/CheckCardStyle"
+                    android:layout_weight="1"
+                    android:text="@string/sample_item_name" />
+
+                <TextView
+                    android:id="@+id/item_card_sum"
+                    style="@style/CheckCardStyle"
+                    android:layout_gravity="top"
+                    android:layout_weight="4"
+                    android:gravity="end"
+                    android:text="@string/sample_item_sum" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_spinner_height"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_rounded_field">
+
+                    <Spinner
+                        android:id="@+id/item_card_category_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/color_primary_dark"
+                        android:spinnerMode="dropdown" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/item_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="end"
+                    android:text="@string/sample_item_quantity" />
+            </LinearLayout>
+
         </LinearLayout>
 
+        <View
+            android:id="@+id/item_card_divider"
+            android:background="@color/color_gray"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

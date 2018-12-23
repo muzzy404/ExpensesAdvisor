@@ -17,13 +17,19 @@
 
         <TextView
             style="@style/CustomTitleStyle"
-            android:id="@+id/items_list_check_title"
+            android:id="@+id/items_list_check_title_date"
             android:gravity="center"
             android:textSize="16sp"
             android:textStyle="bold"
             android:paddingTop="@dimen/card_padding_big"
-            android:paddingBottom="@dimen/card_padding_medium"
             android:text="@string/sample_check_date" />
+        <TextView
+            style="@style/CustomTitleStyle"
+            android:id="@+id/items_list_check_title_place"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:paddingBottom="@dimen/card_padding_medium"
+            android:text="@string/sample_check_place" />
 
         <TextView
             style="@style/CustomTitleStyle"

@@ -17,7 +17,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText passwordField;
 
     public static final String DEBUG_TAG = "DebugLogin";
+
+    private static final String RESPONSE_ON_403 = "Неправильный логин или пароль. Попробуйте еще раз.";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +82,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    String failMessage = String.format(LOGIN_FAILED, errorResponse.toString());
+                    String failMessage;
+                    switch (statusCode) {
+                        case 403:
+                            failMessage = RESPONSE_ON_403;
+                        break;
+                        default:
+                            failMessage = String.format(LOGIN_FAILED, errorResponse.toString());
+                            break;
+                    }
                     Log.d(DEBUG_TAG, failMessage);
                     Toast.makeText(context, failMessage, Toast.LENGTH_SHORT).show();
                 }
             });
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             String failMessage = String.format(LOGIN_FAILED, e.getMessage());
             Log.d(DEBUG_TAG, failMessage);
             Toast.makeText(this, failMessage, Toast.LENGTH_SHORT).show();

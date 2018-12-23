@@ -2,6 +2,7 @@ package spbpu.ponzelkoch.expensesadvisor.datamodels;
 
 import java.util.Locale;
 
+
 public class Item {
     private int id;
     private String name;

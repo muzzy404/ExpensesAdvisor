@@ -11,17 +11,23 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
 
 public class CheckItemsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Spinner categorySpinner;
-    private TextView checkTitle;
+    private TextView checkTitleDate;
+    private TextView checkTitlePlace;
 
     private ArrayList<Item> items;
     private ArrayList<String> categories;
+
+    private long checkId;
+    private static long NO_ID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +35,14 @@ public class CheckItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_items);
 
         categorySpinner = findViewById(R.id.common_category_spinner);
-        checkTitle = findViewById(R.id.items_list_check_title);
+        checkTitleDate = findViewById(R.id.items_list_check_title_date);
+        checkTitlePlace = findViewById(R.id.items_list_check_title_place);
 
         // TODO: set sum or place to title???
         Intent intent = getIntent();
-        checkTitle.setText(intent.getStringExtra(ChecksFragment.CHECK_TITLE));
+        checkTitleDate.setText(intent.getStringExtra(ChecksFragment.CHECK_TITLE_DATE));
+        checkTitlePlace.setText(intent.getStringExtra(ChecksFragment.CHECK_TITLE_PLACE));
 
-        // TODO: load from sever or local db
         categories = loadTestCategories();
         items = loadTestItems();
 
@@ -48,6 +55,13 @@ public class CheckItemsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.items_recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new ItemsListAdapter(items, categories, this));
+
+        checkId = intent.getLongExtra(ChecksFragment.CHECK_ID, NO_ID);
+        if (checkId == NO_ID) {
+            Toast.makeText(this, "Invalid check id", Toast.LENGTH_SHORT).show();
+            // TODO: return to checks fragment
+        }
+        Toast.makeText(this, "ID чека " + String.valueOf(checkId), Toast.LENGTH_SHORT).show();
     }
 
     // TODO: remove or replace with loading of categories from server/local-db

@@ -2,7 +2,6 @@ package spbpu.ponzelkoch.expensesadvisor;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -35,6 +35,7 @@ public class ScanQRFragment extends Fragment {
     private final String FAIL = "Ошибка";
 
     private final String QR_PARSING_FAIL = "Ошибка при распознании QR кода чека";
+    private final String QR_FORMAT_FAIL = "Данный QR код получен не из чека";
     private final String QR_PARSING_SUCCESS = "QR код чека успешно распознан";
 
     private final String DEBUG_TAG = "DebugSendQR";
@@ -45,14 +46,12 @@ public class ScanQRFragment extends Fragment {
     private final String RESPONSE_ON_504 = "Нет ответа от сервера";
     private final String RESPONSE_ON_FAIL = "Произошла ошибка при добавлении чека";
 
-
     public ScanQRFragment() {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final MainActivity activity = (MainActivity) getActivity();
         View root = inflater.inflate(R.layout.fragment_scan_qr, container, false);
@@ -111,7 +110,7 @@ public class ScanQRFragment extends Fragment {
             } catch (JSONException e) {
                 showAlert(activity, FAIL, QR_PARSING_FAIL);
             } catch (Exception e) {
-                showAlert(activity, FAIL, e.getMessage());
+                showAlert(activity, FAIL, QR_FORMAT_FAIL);
             }
 
             // go back to Checks List Fragment
@@ -125,7 +124,7 @@ public class ScanQRFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkScanner.startPreview();
-//        TODO: check for permisson
+//        TODO: check for permission
 //        if (MainActivity.cameraPermission) {
 //            checkScanner.startPreview();
 //        }
@@ -137,6 +136,13 @@ public class ScanQRFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * Method to show alert dialog box
+     *
+     * @param context current context
+     * @param title title of the dialog box
+     * @param message message inside dialog box
+     */
     private void showAlert(Context context, String title, String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle(title);

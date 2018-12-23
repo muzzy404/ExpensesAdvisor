@@ -16,6 +16,7 @@ import spbpu.ponzelkoch.expensesadvisor.CheckItemsActivity;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 import spbpu.ponzelkoch.expensesadvisor.R;
 
+
 public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.ItemsViewHolder> {
 
     private ArrayList<Item> items;
@@ -43,8 +44,10 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         holder.name.setText(item.getName());
         holder.sum.setText(item.getSum());
         holder.quantity.setText(item.getQuantity());
+        if (position == (items.size() - 1))  // do not draw divider for the last card
+            holder.divider.setVisibility(View.INVISIBLE);
 
-        // create and set adapter to spiner
+        // create and set adapter to spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity,
                                                                  android.R.layout.simple_spinner_item,
                                                                  categories);
@@ -73,6 +76,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         private TextView sum;
         private TextView quantity;
         private Spinner categorySpinner;
+        private View divider;
 
         ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +86,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
             sum = itemView.findViewById(R.id.item_card_sum);
             quantity = itemView.findViewById(R.id.item_quantity);
             categorySpinner = itemView.findViewById(R.id.item_card_category_spinner);
+            divider = itemView.findViewById(R.id.item_card_divider);
         }
     }
 

@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,9 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 public class ChecksFragment extends Fragment implements ChecksListAdapter.ChecksFragmentCallback {
 
-    public static String CHECK_TITLE = "check title";
+    public static String CHECK_TITLE_DATE = "check title date";
+    public static String CHECK_TITLE_PLACE = "check title place";
+    public static String CHECK_ID = "check title";
 
     private final String SUCCESS = "Успешно";
     private final String FAIL = "Ошибка";
@@ -58,7 +61,7 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_checks, container, false);
 
@@ -71,11 +74,11 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
     }
 
     @Override
-    public void onCardClick(int id, String title) {
-        // Toast.makeText(getContext(), Integer.toString(id), Toast.LENGTH_SHORT).show();
+    public void onCardClick(int id, Check check) {
         Intent intent = new Intent(getContext(), CheckItemsActivity.class);
-        intent.putExtra(CHECK_TITLE, title);
-        // TODO: putExtra CHECK_ID
+        intent.putExtra(CHECK_TITLE_DATE, check.getDateString());
+        intent.putExtra(CHECK_TITLE_PLACE, check.getPlace());
+        intent.putExtra(CHECK_ID, check.getId());
         startActivity(intent);
     }
 
