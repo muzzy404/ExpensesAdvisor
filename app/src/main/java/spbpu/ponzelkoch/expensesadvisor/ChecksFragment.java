@@ -75,10 +75,15 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
 
     @Override
     public void onCardClick(int id, Check check) {
+        final MainActivity activity = (MainActivity) getActivity();
+
         Intent intent = new Intent(getContext(), CheckItemsActivity.class);
         intent.putExtra(CHECK_TITLE_DATE, check.getDateString());
         intent.putExtra(CHECK_TITLE_PLACE, check.getPlace());
         intent.putExtra(CHECK_ID, check.getId());
+        intent.putExtra(LoginActivity.USERNAME, activity.getUsername());
+        intent.putExtra(LoginActivity.PASSWORD, activity.getPassword());
+
         startActivity(intent);
     }
 

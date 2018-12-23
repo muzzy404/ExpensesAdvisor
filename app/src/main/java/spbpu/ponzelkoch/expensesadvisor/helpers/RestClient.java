@@ -20,6 +20,7 @@ public class RestClient {
     public static final String LOGIN_URL = "/user/login";
     public static final String SEND_QR_URL = "/sendQRcode";
     public static final String RECENT_CHECKS_URL = "/checks/getRecent";
+    public static final String CATEGORIES_URL = "/categories";
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
