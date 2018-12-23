@@ -1,6 +1,7 @@
 package spbpu.ponzelkoch.expensesadvisor.helpers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -21,6 +22,7 @@ public class RestClient {
     public static final String RECENT_CHECKS_URL = "/checks/getRecent";
     public static final String CATEGORIES_URL = "/categories";
     public static final String ITEMS_URL = "/items/checkID/%d";
+    public static final String UPDATE_CATEGORY_URL = "/items/updateCategory";
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -51,6 +53,17 @@ public class RestClient {
         String contentType = "application/json";
         StringEntity entity = new StringEntity(json.toString());
         client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
+    }
+
+    public static void put(Context context, String url, JSONObject json,
+                           String username, String password, AsyncHttpResponseHandler responseHandler)
+            throws UnsupportedEncodingException {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setBasicAuth(username, password);
+
+        String contentType = "application/json";
+        StringEntity entity = new StringEntity(json.toString(), "UTF-8");
+        client.put(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {

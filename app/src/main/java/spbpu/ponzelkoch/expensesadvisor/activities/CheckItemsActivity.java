@@ -28,6 +28,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -100,13 +101,24 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
                 ArrayList<JSONObject> jsons = CommonHelper.getUpdateItemsCategoriesJSON(items);
                 for (JSONObject json : jsons) {
                     Log.d(DEBUG_TAG, json.toString(1));
-                    // TODO: post to server
+                    postCategoriesChanges(json);
                 }
-            } catch (JSONException e) {
-                Log.d(DEBUG_TAG, "Failed to parse");
+            } catch (JSONException | UnsupportedEncodingException e) {
+                Log.d(DEBUG_TAG, "Failed to parse " + e.getMessage());
             }
         }
         super.onDestroy();
+    }
+
+    private void postCategoriesChanges(JSONObject json) throws UnsupportedEncodingException {
+        RestClient.put(this, RestClient.UPDATE_CATEGORY_URL, json, username, password,
+                       new JsonHttpResponseHandler() {
+                           @Override
+                           public void onFailure(int statusCode, Header[] headers,
+                                                 Throwable throwable, JSONObject errorResponse) {
+                               Log.d(DEBUG_TAG, "updating category failure " + errorResponse.toString());
+                           }
+                       });
     }
 
     /**
