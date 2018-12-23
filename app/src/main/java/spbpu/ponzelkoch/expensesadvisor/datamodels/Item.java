@@ -2,15 +2,17 @@ package spbpu.ponzelkoch.expensesadvisor.datamodels;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+
 
 public class Item {
-    private int id;
+    private long id;
     private String name;
     private double sum;
     private double quantity;
     private String category;
 
-    public Item(int id, String name, double sum, double quantity, String category) {
+    public Item(long id, String name, double sum, double quantity, String category) {
         this.id = id;
         this.name = name;
         this.sum = sum;
@@ -18,7 +20,7 @@ public class Item {
         this.category = category;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -41,5 +43,12 @@ public class Item {
 
     public String getCategory() {
         return category;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        final String sep = " | ";
+        return getId() + sep + getName() + sep + getSum() + sep + getQuantity() + sep + getCategory();
     }
 }

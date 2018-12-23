@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 
@@ -45,4 +46,58 @@ public class BuildersTests {
         }
     }
 
+    @Test
+    public void ItemsBuildPositiveTest() throws JSONException {
+        String rawData =
+                "{\n" +
+                "  \"items\": [\n" +
+                "    {\n" +
+                "      \"id\": 85,\n" +
+                "      \"name\": \"Нектар Добрый апельсин 2л т/п\",\n" +
+                "      \"price\": 94.99,\n" +
+                "      \"quantity\": 1.0,\n" +
+                "      \"category\": \"Продукты\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 93,\n" +
+                "      \"name\": \"Томаты кг\",\n" +
+                "      \"price\": 133.1,\n" +
+                "      \"quantity\": 1.702,\n" +
+                "      \"category\": \"Продукты\"\n" +
+                "    }" +
+                "  ]\n" +
+                "}";
+
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("85 | Нектар Добрый апельсин 2л т/п | 94.99 | 1 | Продукты");
+        expected.add("93 | Томаты кг | 133.10 | 1.70 | Продукты");
+
+        ArrayList<Item> actual = ModelsBuilder.buildItemsFromJSON(new JSONObject(rawData));
+
+        int i = 0;
+        for(Item item: actual) {
+            Assert.assertEquals(expected.get(i++), item.toString());
+        }
+    }
+
+    @Test
+    public void CategoriesBuildPositiveTest() throws JSONException {
+        String rawData = "{\n" +
+                         "  \"categories\": [\n" +
+                         "    \"Продукты\",\n" +
+                         "    \"Услуги\"\n" +
+                         "  ]\n" +
+                         "}";
+
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Продукты");
+        expected.add("Услуги");
+
+        ArrayList<String> actual = ModelsBuilder.getCategoriesFromJSON(new JSONObject(rawData));
+
+        int i = 0;
+        for(String category: actual) {
+            Assert.assertEquals(expected.get(i++), category);
+        }
+    }
 }
