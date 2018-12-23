@@ -76,11 +76,13 @@ public class CheckItemsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        loadCategories();
-        loadItems();
+        loadCategories(success -> {
+            if (success)
+                loadItems();
+        });
     }
 
-    private void loadCategories() {
+    private void loadCategories(CategoriesCallback callback) {
         Log.d(DEBUG_TAG, "loadCategories started");
         CheckItemsActivity context = this;
 
@@ -89,19 +91,22 @@ public class CheckItemsActivity extends AppCompatActivity {
                 Log.d(DEBUG_TAG, "Load categories fail");
                 Toast.makeText(context, LOAD_CATEGORIES_FAIL, Toast.LENGTH_SHORT).show();
                 // TODO: finish activity
-                return;
+            } else {
+                try {
+                    categories = ModelsBuilder.getCategoriesFromJSON(response);
+                    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context,
+                            android.R.layout.simple_spinner_item,
+                            categories);
+                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    categorySpinner.setAdapter(spinnerAdapter);
+                    Log.d(DEBUG_TAG, "Load categories success");
+                } catch (JSONException e) {
+                    Log.d(DEBUG_TAG, "Load categories parsing fail");
+                }
             }
-            try {
-                categories = ModelsBuilder.getCategoriesFromJSON(response);
-                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context,
-                        android.R.layout.simple_spinner_item,
-                        categories);
-                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                categorySpinner.setAdapter(spinnerAdapter);
-            } catch (JSONException e) {
-                Log.d(DEBUG_TAG, "Load categories parsing fail");
-            }
+            callback.onLoadedCategories(success);
         });
+
 
         Log.d(DEBUG_TAG, "loadCategories finished");
     }
@@ -172,5 +177,9 @@ public class CheckItemsActivity extends AppCompatActivity {
                 callback.onJSONResponse(false, errorResponse);
             }
         });
+    }
+
+    private interface CategoriesCallback {
+        public void onLoadedCategories(boolean success);
     }
 }
