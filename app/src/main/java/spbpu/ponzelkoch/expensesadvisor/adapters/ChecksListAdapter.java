@@ -43,8 +43,7 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         holder.date.setText(check.getDateString());
         holder.sum.setText(check.getSum());
         holder.place.setText(check.getPlace());
-        if (position == (checks.size() - 1))  // do not draw divider for the last card
-            holder.divider.setVisibility(View.INVISIBLE);
+        holder.divider.setVisibility((position == (checks.size() - 1)) ? View.INVISIBLE : View.VISIBLE);
 
         holder.card.setOnClickListener(v -> fragment.onCardClick(holder.card.getId(), check));
     }

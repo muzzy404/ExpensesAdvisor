@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
@@ -32,6 +33,7 @@ public class ModelsBuilder {
             models.add(check);
         }
 
+        Collections.sort(models);
         return models;
     }
 

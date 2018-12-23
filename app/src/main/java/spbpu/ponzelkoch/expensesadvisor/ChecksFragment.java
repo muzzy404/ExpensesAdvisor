@@ -1,6 +1,5 @@
 package spbpu.ponzelkoch.expensesadvisor;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +16,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,7 +99,6 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
                                Log.d(DEBUG_TAG, response.toString());
                                try {
                                    checks = ModelsBuilder.buildChecksFromJSON(response);
-                                   Collections.sort(checks);
                                    adapter.newChecks(checks);
                                    Log.d(DEBUG_TAG, GET_CHECKS_SUCCESS);
                                    Toast.makeText(activity, GET_CHECKS_SUCCESS, Toast.LENGTH_SHORT).show();

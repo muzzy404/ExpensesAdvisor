@@ -44,8 +44,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         holder.name.setText(item.getName());
         holder.sum.setText(item.getSum());
         holder.quantity.setText(item.getQuantity());
-        if (position == (items.size() - 1))  // do not draw divider for the last card
-            holder.divider.setVisibility(View.INVISIBLE);
+        holder.divider.setVisibility((position == (items.size() - 1)) ? View.INVISIBLE : View.VISIBLE);
 
         // create and set adapter to spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity,
