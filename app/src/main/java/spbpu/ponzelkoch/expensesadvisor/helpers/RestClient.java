@@ -5,7 +5,6 @@ import android.content.Context;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
 
 import org.json.JSONObject;
 
@@ -21,6 +20,7 @@ public class RestClient {
     public static final String SEND_QR_URL = "/sendQRcode";
     public static final String RECENT_CHECKS_URL = "/checks/getRecent";
     public static final String CATEGORIES_URL = "/categories";
+    public static final String ITEMS_URL = "/items/checkID/%d";
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
