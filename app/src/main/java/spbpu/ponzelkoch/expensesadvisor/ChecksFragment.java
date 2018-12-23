@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -32,12 +33,9 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 public class ChecksFragment extends Fragment implements ChecksListAdapter.ChecksFragmentCallback {
 
-    public static String CHECK_TITLE_DATE = "check title date";
-    public static String CHECK_TITLE_PLACE = "check title place";
-    public static String CHECK_ID = "check title";
-
-    private final String SUCCESS = "Успешно";
-    private final String FAIL = "Ошибка";
+    static String CHECK_TITLE_DATE = "check title date";
+    static String CHECK_TITLE_PLACE = "check title place";
+    static String CHECK_ID = "check title";
 
     private final String GET_CHECKS_FAIL = "Ошибка при получнии списка чеков с сервреа";
     private final String GET_CHECKS_SUCCESS = "Чеки успешно загружены";
@@ -47,6 +45,7 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
 
     private RecyclerView recyclerView;
     private ChecksListAdapter adapter;
+    private ProgressBar progressBar;
 
     private static final String DEBUG_TAG = "DebugChecks";
 
@@ -69,6 +68,7 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
         recyclerView = view.findViewById(R.id.checks_recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+        progressBar = view.findViewById(R.id.checks_progress_bar);
 
         return view;
     }
@@ -109,13 +109,14 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
                                    Log.d(DEBUG_TAG, e.getMessage());
                                    Toast.makeText(activity, CHECKS_PARSING_FAIL, Toast.LENGTH_SHORT).show();
                                }
-                               Log.d(DEBUG_TAG, "parsing finished");
+                               progressBar.setVisibility(View.INVISIBLE);
                            }
 
                            @Override
                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                                Log.d(DEBUG_TAG, GET_CHECKS_FAIL);
                                Toast.makeText(activity, GET_CHECKS_FAIL, Toast.LENGTH_SHORT).show();
+                               progressBar.setVisibility(View.INVISIBLE);
                            }
                        });
     }

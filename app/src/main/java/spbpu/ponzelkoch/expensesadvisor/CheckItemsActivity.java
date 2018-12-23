@@ -12,7 +12,9 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ public class CheckItemsActivity extends AppCompatActivity {
     private Spinner categorySpinner;
     private TextView checkTitleDate;
     private TextView checkTitlePlace;
+    private ProgressBar progressBar;
 
     private ArrayList<Item> items;
     ArrayList<String> categories = new ArrayList<>();
@@ -54,6 +57,7 @@ public class CheckItemsActivity extends AppCompatActivity {
         categorySpinner = findViewById(R.id.common_category_spinner);
         checkTitleDate = findViewById(R.id.items_list_check_title_date);
         checkTitlePlace = findViewById(R.id.items_list_check_title_place);
+        progressBar = findViewById(R.id.items_progress_bar);
 
         Intent intent = getIntent();
         checkTitleDate.setText(intent.getStringExtra(ChecksFragment.CHECK_TITLE_DATE));
@@ -69,7 +73,6 @@ public class CheckItemsActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid check id", Toast.LENGTH_SHORT).show();
             // TODO: return to checks fragment
         }
-        Toast.makeText(this, "ID чека " + String.valueOf(checkId), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -114,18 +117,19 @@ public class CheckItemsActivity extends AppCompatActivity {
     private void loadItems() {
         CheckItemsActivity context = this;
         makeRestGetRequest(String.format(Locale.getDefault(),
-                                 RestClient.ITEMS_URL, checkId), (success, response) -> {
+                           RestClient.ITEMS_URL, checkId), (success, response) -> {
             if (!success) {
                 Log.d(DEBUG_TAG, "Load items fail");
                 Toast.makeText(context, LOAD_ITEMS_FAIL, Toast.LENGTH_SHORT).show();
-                return;
+            } else {
+                try {
+                    items = ModelsBuilder.buildItemsFromJSON(response);
+                    recyclerView.setAdapter(new ItemsListAdapter(items, categories, context));
+                } catch (JSONException e) {
+                    Log.d(DEBUG_TAG, "Load items parsing fail");
+                }
             }
-            try {
-                items = ModelsBuilder.buildItemsFromJSON(response);
-                recyclerView.setAdapter(new ItemsListAdapter(items, categories, context));
-            } catch (JSONException e) {
-                Log.d(DEBUG_TAG, "Load items parsing fail");
-            }
+            progressBar.setVisibility(View.INVISIBLE);  // set loading progress bar to invisible
         });
     }
 

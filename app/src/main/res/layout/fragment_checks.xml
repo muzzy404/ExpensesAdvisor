@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".ChecksFragment">
 
+    <ProgressBar
+        android:id="@+id/checks_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/checks_recycle_view"
         android:scrollbars="vertical"

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     public BottomNavigationView navigation;
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public String getPassword() {

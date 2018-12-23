@@ -15,13 +15,21 @@
         android:elevation="@dimen/card_elevation_medium"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/items_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <TextView
             style="@style/CustomTitleStyle"
             android:id="@+id/items_list_check_title_date"
             android:gravity="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:paddingTop="@dimen/card_padding_big"
+            android:paddingTop="@dimen/card_padding_medium"
             android:text="@string/sample_check_date" />
         <TextView
             style="@style/CustomTitleStyle"
