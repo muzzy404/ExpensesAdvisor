@@ -14,7 +14,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class RestClient {
 
-    private static final String BASE_URL = "https://expenses-advisor-qa.herokuapp.com";
+    private static final String BASE_URL = "https://expenses-advisor.herokuapp.com";
 
     public static final String LOGIN_URL = "/user/login";
     public static final String SEND_QR_URL = "/sendQRcode";

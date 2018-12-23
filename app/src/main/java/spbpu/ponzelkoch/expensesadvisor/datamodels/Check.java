@@ -20,11 +20,16 @@ public class Check implements Comparable<Check> {
     private SimpleDateFormat toDateFormatter = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
     private SimpleDateFormat toTitleFormatter = new SimpleDateFormat("d MMMM yyyy, EEE, HH:mm", Locale.getDefault());
 
+    private static final String UNKNOWN = "Неизвестно";
+
     public Check(long id, String date, String place, double sum) throws ParseException {
         this.id = id;
         this.date = toDateFormatter.parse(date);  // date sample: "2018-11-28T11:54:22.047Z"
         this.place = place.trim();
         this.sum = sum;
+
+        if (this.place.length() == 0)
+            this.place = UNKNOWN;
     }
 
     public long getId() {

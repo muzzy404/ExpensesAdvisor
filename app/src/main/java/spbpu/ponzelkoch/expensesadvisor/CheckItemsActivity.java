@@ -9,7 +9,6 @@ import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
 import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,13 +81,14 @@ public class CheckItemsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method to load categories from server.
+     * @param callback Callback to make next actions after getting of categories.
+     */
     private void loadCategories(CategoriesCallback callback) {
-        Log.d(DEBUG_TAG, "loadCategories started");
         CheckItemsActivity context = this;
-
-        getJSONObj(RestClient.CATEGORIES_URL, (success, response) -> {
+        makeRestGetRequest(RestClient.CATEGORIES_URL, (success, response) -> {
             if (!success) {
-                Log.d(DEBUG_TAG, "Load categories fail");
                 Toast.makeText(context, LOAD_CATEGORIES_FAIL, Toast.LENGTH_SHORT).show();
                 // TODO: finish activity
             } else {
@@ -99,27 +99,21 @@ public class CheckItemsActivity extends AppCompatActivity {
                             categories);
                     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     categorySpinner.setAdapter(spinnerAdapter);
-                    Log.d(DEBUG_TAG, "Load categories success");
                 } catch (JSONException e) {
+                    success = false;
                     Log.d(DEBUG_TAG, "Load categories parsing fail");
                 }
             }
             callback.onLoadedCategories(success);
         });
-
-
-        Log.d(DEBUG_TAG, "loadCategories finished");
     }
 
+    /**
+     * Method to load items from server.
+     */
     private void loadItems() {
-        Log.d(DEBUG_TAG, "loadItems started");
-        Log.d(DEBUG_TAG, String.format("loadItems categories size = %d", categories.size()));
-        for(String category: categories) {
-            Log.d(DEBUG_TAG, "loadItems: category = " + category);
-        }
-
         CheckItemsActivity context = this;
-        getJSONObj(String.format(Locale.getDefault(),
+        makeRestGetRequest(String.format(Locale.getDefault(),
                                  RestClient.ITEMS_URL, checkId), (success, response) -> {
             if (!success) {
                 Log.d(DEBUG_TAG, "Load items fail");
@@ -133,36 +127,23 @@ public class CheckItemsActivity extends AppCompatActivity {
                 Log.d(DEBUG_TAG, "Load items parsing fail");
             }
         });
-
-        Log.d(DEBUG_TAG, "loadItems finished");
     }
 
-    // TODO: remove or replace with loading of categories from server/local-db
-    private void loadTestCategories() {
-        categories.add("Продукты");
-        categories.add("Продукты 2");
-        categories.add("Продукты 3");
-    }
-
-    // TODO: remove or replace with loading of categories from server/local-db
-    private ArrayList<Item> loadTestItems() {
-        ArrayList<Item> list = new ArrayList<>();
-
-        list.add(new Item(1, "ОГО Завтр.МЮС.зап.сух.яблок350г", 81.9, 1.0, categories.get(1)));
-        list.add(new Item(2, "MILKA Шок.BUBBLES кокос.нач.97г", 49.99, 1.0, categories.get(1)));
-        list.add(new Item(3, "OR.Резин.BUB.БЕЛОСНЕЖ.жев.13,6г", 24.99, 2.0, categories.get(1)));
-        list.add(new Item(4, "Цыпленок - Бройлер 1 кат охл, 1 кг", 199.39, 1.734, categories.get(1)));
-        list.add(new Item(5, "Зубная счетка splat", 70.00, 1.0, categories.get(1)));
-        list.add(new Item(6, "Свитер красный ostin", 2599.00, 1.0, categories.get(1)));
-
-        return list;
-    }
-
+    /**
+     * Interface to handle JSON only after getting of response.
+     */
     private interface OnJSONResponseCallback {
-        public void onJSONResponse(boolean success, JSONObject response);
+        void onJSONResponse(boolean success, JSONObject response);
     }
 
-    private void getJSONObj(String url, OnJSONResponseCallback callback) {
+    /**
+     * Interface to make actions only when categories loading is finished.
+     */
+    private interface CategoriesCallback {
+        void onLoadedCategories(boolean success);
+    }
+
+    private void makeRestGetRequest(String url, OnJSONResponseCallback callback) {
         CheckItemsActivity context = this;
 
         RestClient.get(url, context.username, context.password, new JsonHttpResponseHandler() {
@@ -179,7 +160,4 @@ public class CheckItemsActivity extends AppCompatActivity {
         });
     }
 
-    private interface CategoriesCallback {
-        public void onLoadedCategories(boolean success);
-    }
 }
