@@ -1,7 +1,6 @@
 package spbpu.ponzelkoch.expensesadvisor.helpers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -56,8 +55,7 @@ public class RestClient {
     }
 
     public static void put(Context context, String url, JSONObject json,
-                           String username, String password, AsyncHttpResponseHandler responseHandler)
-            throws UnsupportedEncodingException {
+                           String username, String password, AsyncHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.setBasicAuth(username, password);
 

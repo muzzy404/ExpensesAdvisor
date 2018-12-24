@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import spbpu.ponzelkoch.expensesadvisor.fragments.ChecksFragment;
@@ -21,10 +20,11 @@ public class MainActivity extends AppCompatActivity {
     private String username;
     private String password;
 
+    public BottomNavigationView navigation;
+
     private final int CAMERA_PERMISSION = 10;
     public static boolean cameraPermission = false;
 
-    public BottomNavigationView navigation;
 
     public String getUsername() {
         return this.username;
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         return password;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = item -> {
                 boolean result = false;
-
                 switch (item.getItemId()) {
                     case R.id.navigation_checks_list:
                         setFragment(new ChecksFragment());
@@ -80,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                         result = true;
                         break;
                 }
-
                 return result;
             };
 

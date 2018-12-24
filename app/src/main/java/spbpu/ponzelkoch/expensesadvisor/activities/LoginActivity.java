@@ -25,13 +25,14 @@ public class LoginActivity extends AppCompatActivity {
     public static final String PASSWORD = "password";
 
     private static final String LOGIN_FAILED = "login failed: %s";
+    private static final String JSON_CREATION_FAILED = "json creation failed";
 
     EditText usernameField;
     EditText passwordField;
 
-    public static final String DEBUG_TAG = "DebugLogin";
-
     private static final String RESPONSE_ON_403 = "Неправильный логин или пароль. Попробуйте еще раз.";
+    private static final String LOGIN_SERVER_ERROR = "Ошибка сервера при входе. Попробуйте еще раз.";
+    private static final String DEBUG_TAG = "DebugLogin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +55,22 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Login method.
+     */
     protected void login() {
-        final String username = usernameField.getText().toString();
+        final String username = usernameField.getText().toString().trim();
         final String password = passwordField.getText().toString();
 
+        // create JSONObject for request
         JSONObject json = new JSONObject();
         try {
             json.put(USERNAME, username);
             json.put(PASSWORD, password);
             Log.d(DEBUG_TAG, json.toString());
         } catch (JSONException e) {
-            final String failMessage = "json creation failed";
-            Log.d(DEBUG_TAG, failMessage);
-            Toast.makeText(this, failMessage, Toast.LENGTH_SHORT).show();
+            Log.d(DEBUG_TAG, JSON_CREATION_FAILED);
+            Toast.makeText(this, JSON_CREATION_FAILED, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -75,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             RestClient.post(this, RestClient.LOGIN_URL, json, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // start MainActivity if login was successful
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra(USERNAME, username);
                     intent.putExtra(PASSWORD, password);
@@ -89,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                             failMessage = RESPONSE_ON_403;
                         break;
                         default:
-                            failMessage = String.format(LOGIN_FAILED, errorResponse.toString());
+                            failMessage = String.format(LOGIN_FAILED, LOGIN_SERVER_ERROR);
                             break;
                     }
                     Log.d(DEBUG_TAG, failMessage);

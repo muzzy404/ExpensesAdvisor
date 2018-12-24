@@ -89,9 +89,11 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
         startActivity(intent);
     }
 
+    /**
+     * Method to load checks from server.
+     */
     private void getChecksFromServer() {
         final MainActivity activity = (MainActivity) getActivity();
-        Log.d(DEBUG_TAG, "getChecksFromServer");
 
         RestClient.get(RestClient.RECENT_CHECKS_URL,
                        activity.getUsername(), activity.getPassword(),
@@ -99,17 +101,17 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
 
                            @Override
                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                               Log.d(DEBUG_TAG, "got checks JSONObject");
-                               Log.d(DEBUG_TAG, response.toString());
+                               Log.d(DEBUG_TAG, "got checks: " + response.toString());
                                try {
+                                   // build checks models from JSON response and set them to adapter
                                    checks = ModelsBuilder.buildChecksFromJSON(response);
                                    adapter.checksChanges(checks);
                                    Log.d(DEBUG_TAG, GET_CHECKS_SUCCESS);
-                                   Toast.makeText(activity, GET_CHECKS_SUCCESS, Toast.LENGTH_SHORT).show();
                                } catch (JSONException | ParseException e) {
                                    Log.d(DEBUG_TAG, e.getMessage());
                                    Toast.makeText(activity, CHECKS_PARSING_FAIL, Toast.LENGTH_SHORT).show();
                                }
+                               // set progress bar to invisible when loading is finished
                                progressBar.setVisibility(View.INVISIBLE);
                            }
 
@@ -120,5 +122,7 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
                                progressBar.setVisibility(View.INVISIBLE);
                            }
                        });
+
     }
+
 }

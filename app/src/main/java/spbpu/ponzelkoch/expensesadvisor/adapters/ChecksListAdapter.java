@@ -17,10 +17,10 @@ import spbpu.ponzelkoch.expensesadvisor.datamodels.Check;
 
 public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.ChecksViewHolder> {
 
-    private static final String DEBUG_TAG = "DebugCardsAdapter";
-
     private ArrayList<Check> checks;
     private ChecksFragment fragment;
+
+    private static final String DEBUG_TAG = "DebugCardsAdapter";
 
     public ChecksListAdapter(ArrayList<Check> checks, ChecksFragment fragment) {
         this.checks = checks;
@@ -44,6 +44,7 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         holder.place.setText(check.getPlace());
         holder.divider.setVisibility((position == (checks.size() - 1)) ? View.INVISIBLE : View.VISIBLE);
 
+        // set Listener that implements ChecksFragmentCallback
         holder.card.setOnClickListener(v -> fragment.onCardClick(holder.card.getId(), check));
     }
 
@@ -76,12 +77,15 @@ public class ChecksListAdapter extends RecyclerView.Adapter<ChecksListAdapter.Ch
         }
     }
 
-    public interface ChecksFragmentCallback {
-        void onCardClick(final int id, final Check check);
-    }
-
     public void checksChanges(ArrayList<Check> checks) {
         this.checks = checks;
         notifyDataSetChanged();
+    }
+
+    /**
+     * Callback interface to make actions in activity/fragment.
+     */
+    public interface ChecksFragmentCallback {
+        void onCardClick(final int id, final Check check);
     }
 }

@@ -11,6 +11,12 @@ import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 
 public class CommonHelper {
 
+    /**
+     * Method ro parse string from QR code to JSONObject for request.
+     * @param string QR string
+     * @return JSONObject for request
+     * @throws JSONException
+     */
     public static JSONObject QRStringToJSON(String string) throws JSONException {
         // TODO: add checking for wrong QRs
         JSONObject result = new JSONObject();
@@ -35,6 +41,12 @@ public class CommonHelper {
         return result;
     }
 
+    /**
+     * Method to get JSONObjects for updating items categories.
+     * @param items items array
+     * @return JSONObjects for updating items request
+     * @throws JSONException
+     */
     public static ArrayList<JSONObject> getUpdateItemsCategoriesJSON(ArrayList<Item> items)
             throws JSONException {
         final String CATEGORY_FILED = "category";

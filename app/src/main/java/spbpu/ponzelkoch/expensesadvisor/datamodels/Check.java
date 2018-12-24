@@ -40,6 +40,10 @@ public class Check implements Comparable<Check> {
         return date;
     }
 
+    /**
+     * Method to get date with right formatting.
+     * @return string with date for cards and titles
+     */
     public String getDateString() {
         return toTitleFormatter.format(date);
     }

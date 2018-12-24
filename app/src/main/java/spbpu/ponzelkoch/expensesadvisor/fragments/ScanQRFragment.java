@@ -39,14 +39,14 @@ public class ScanQRFragment extends Fragment {
     private final String QR_FORMAT_FAIL = "Данный QR код получен не из чека";
     private final String QR_PARSING_SUCCESS = "QR код чека успешно распознан";
 
-    private final String DEBUG_TAG = "DebugSendQR";
-
     private final String RESPONSE_ON_201 = "Чек распознан и добавлен в вашу библиотеку";
     private final String RESPONSE_ON_202 = "Чек не обнаружен на сервере ФНС, добавлен в список ожидания";
     private final String RESPONSE_ON_406 = "Чек не обнаружен на сервере ФНС";
     private final String RESPONSE_ON_405 = "Чек уже загружен в вашу библиотеку";
     private final String RESPONSE_ON_504 = "Нет ответа от сервера";
     private final String RESPONSE_ON_FAIL = "Произошла ошибка при добавлении чека";
+
+    private final String DEBUG_TAG = "DebugSendQR";
 
     public ScanQRFragment() {
         // Required empty public constructor
@@ -62,10 +62,10 @@ public class ScanQRFragment extends Fragment {
         checkScanner = new CodeScanner(activity, scannerView);
         checkScanner.setDecodeCallback(result -> activity.runOnUiThread(() -> {
             try {
-                // getting json from QR code string
+                // getting JSON from QR code string
                 JSONObject json = CommonHelper.QRStringToJSON(result.getText());
                 Toast.makeText(activity, QR_PARSING_SUCCESS, Toast.LENGTH_LONG).show();
-                Log.d("DebugSendQR", json.toString(1));
+                Log.d(DEBUG_TAG, json.toString(1));
 
                 try {
                     RestClient.post(activity, RestClient.SEND_QR_URL, json,

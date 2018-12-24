@@ -56,6 +56,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         holder.categorySpinner.setAdapter(spinnerAdapter);
         holder.categorySpinner.setSelection(categories.indexOf(item.getCategory()));
 
+        // // set Listener that implements ItemCategoryCallback
         final int itemPosition = position;
         holder.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private boolean firstSelection = true;
@@ -69,8 +70,6 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
-
-        // TODO: listener or something else for selection of items category
     }
 
     @Override
@@ -105,12 +104,16 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         }
     }
 
-    public interface ItemCategoryCallback {
-        void onItemCategorySelected(boolean firstSelection, int itemPosition, int categoryPosition);
-    }
-
     public void itemsChanges(ArrayList<Item> items) {
         this.items = items;
         notifyDataSetChanged();
     }
+
+    /**
+     * Callback interface to make actions in activity/fragment.
+     */
+    public interface ItemCategoryCallback {
+        void onItemCategorySelected(boolean firstSelection, int itemPosition, int categoryPosition);
+    }
+
 }

@@ -36,6 +36,11 @@ public class Item implements Comparable<Item> {
         return String.format(Locale.US, "%.2f", sum);
     }
 
+    /**
+     * Method to get quantity with right formatting.
+     * @return string with int if fraction is 0,
+     *         otherwise returns float number string with 2 numbers after decimal point
+     */
     public String getQuantity()
     {
         int fraction = (int)(100 * quantity) % 100;

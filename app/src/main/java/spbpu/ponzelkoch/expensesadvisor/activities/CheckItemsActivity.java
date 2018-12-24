@@ -52,9 +52,9 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
     private String username;
     private String password;
 
-    private static final String DEBUG_TAG = "DebugItems";
     private static final String LOAD_CATEGORIES_FAIL = "При загрузке категорий товаров произошла ошибка";
     private static final String LOAD_ITEMS_FAIL = "При загрузке позиций чека произошла ошибка";
+    private static final String DEBUG_TAG = "DebugItems";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
     @Override
     protected void onStart() {
         super.onStart();
+        // load categories, if it is successful, then load all items
         loadCategories(success -> {
             if (success)
                 loadItems();
@@ -98,10 +99,11 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
         // if no items, then categories couldn't be changed
         if (categoriesChanged) {
             try {
+                // update items categories by groups (one category -> one group of items)
                 ArrayList<JSONObject> jsons = CommonHelper.getUpdateItemsCategoriesJSON(items);
                 for (JSONObject json : jsons) {
                     Log.d(DEBUG_TAG, json.toString(1));
-                    postCategoriesChanges(json);
+                    uploadCategoriesChanges(json);
                 }
             } catch (JSONException | UnsupportedEncodingException e) {
                 Log.d(DEBUG_TAG, "Failed to parse " + e.getMessage());
@@ -110,17 +112,7 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
         super.onDestroy();
     }
 
-    private void postCategoriesChanges(JSONObject json) throws UnsupportedEncodingException {
-        RestClient.put(this, RestClient.UPDATE_CATEGORY_URL, json, username, password,
-                       new JsonHttpResponseHandler() {
-                           @Override
-                           public void onFailure(int statusCode, Header[] headers,
-                                                 Throwable throwable, JSONObject errorResponse) {
-                               Log.d(DEBUG_TAG, "updating category failure " + errorResponse.toString());
-                           }
-                       });
-    }
-
+    // loading methods
     /**
      * Method to load categories from server.
      * @param callback Callback to make next actions after getting of categories.
@@ -134,6 +126,7 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
             } else {
                 try {
                     categories = ModelsBuilder.getCategoriesFromJSON(response);
+                    // set categories list to spinner (common category spinner) and listener for it
                     ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context,
                             android.R.layout.simple_spinner_item,
                             categories);
@@ -145,6 +138,7 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
                     Log.d(DEBUG_TAG, "Load categories parsing fail");
                 }
             }
+            // inform waiting entities (e.g. waiting for items list loading start)
             callback.onLoadedCategories(success);
         });
     }
@@ -162,33 +156,27 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
             } else {
                 try {
                     items = ModelsBuilder.buildItemsFromJSON(response);
+                    // pass loaded items and categories to adapter and set adapter to Recycler View
                     itemsListAdapter = new ItemsListAdapter(items, categories, context);
                     recyclerView.setAdapter(itemsListAdapter);
                 } catch (JSONException e) {
                     Log.d(DEBUG_TAG, "Load items parsing fail");
                 }
             }
-            progressBar.setVisibility(View.INVISIBLE);  // set loading progress bar to invisible
+            // set loading progress bar to invisible when loading is finished
+            progressBar.setVisibility(View.INVISIBLE);
         });
     }
 
-    /**
-     * Interface to handle JSON only after getting of response.
-     */
-    private interface OnJSONResponseCallback {
-        void onJSONResponse(boolean success, JSONObject response);
-    }
+    // help methods
 
     /**
-     * Interface to make actions only when categories loading is finished.
+     * Method to make REST GET request and then get response by callback using.
+     * @param url URL
+     * @param callback callback to handle response later
      */
-    private interface CategoriesCallback {
-        void onLoadedCategories(boolean success);
-    }
-
     private void makeRestGetRequest(String url, OnJSONResponseCallback callback) {
         CheckItemsActivity context = this;
-
         RestClient.get(url, context.username, context.password, new JsonHttpResponseHandler() {
 
             @Override
@@ -203,28 +191,30 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
         });
     }
 
-    class OnCommonCategorySelected implements AdapterView.OnItemSelectedListener {
-        private boolean firstSelection = true;
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (firstSelection) {
-                firstSelection = false;
-                return;
-            }
-            categoriesChanged = true;
-
-            final String selectedCategory = categories.get(position);
-            for(Item item: items) {
-                item.setCategory(selectedCategory);
-            }
-            itemsListAdapter.itemsChanges(items);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) { }
+    /**
+     * Method to upload to server items categories changes/
+     * @param json JSON for uploading request body
+     * @throws UnsupportedEncodingException
+     */
+    private void uploadCategoriesChanges(JSONObject json) throws UnsupportedEncodingException {
+        RestClient.put(this, RestClient.UPDATE_CATEGORY_URL, json, username, password,
+                new JsonHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers,
+                                          Throwable throwable, JSONObject errorResponse) {
+                        Log.d(DEBUG_TAG, "updating category failure " + errorResponse.toString());
+                    }
+                });
     }
 
+    // on item(-s) category changed methods
+
+    /**
+     * Method (callback) to change item category when it was changed on an item card.
+     * @param firstSelection is it a firs selection (to do nothing when activity starts and loads everything)
+     * @param itemPosition position of the item in items array
+     * @param categoryPosition position of the category in categories array
+     */
     @Override
     public void onItemCategorySelected(boolean firstSelection, int itemPosition, int categoryPosition) {
         if (firstSelection)
@@ -238,4 +228,45 @@ public class CheckItemsActivity extends AppCompatActivity implements ItemsListAd
         Log.d(DEBUG_TAG, "Category: " + items.get(itemPosition).getCategory());
     }
 
+    /**
+     * Class listener for Common Category spinner selections.
+     */
+    class OnCommonCategorySelected implements AdapterView.OnItemSelectedListener {
+        private boolean firstSelection = true;
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (firstSelection) {
+                // do nothing when activity starts and loads everything
+                firstSelection = false;
+                return;
+            }
+            categoriesChanged = true;
+
+            final String selectedCategory = categories.get(position);
+            // set celected common category to each item
+            for(Item item: items) {
+                item.setCategory(selectedCategory);
+            }
+            itemsListAdapter.itemsChanges(items);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    }
+
+    // callbacks interfaces
+    /**
+     * Interface to handle JSON only after getting of response.
+     */
+    private interface OnJSONResponseCallback {
+        void onJSONResponse(boolean success, JSONObject response);
+    }
+
+    /**
+     * Interface to make actions only when categories loading is finished.
+     */
+    private interface CategoriesCallback {
+        void onLoadedCategories(boolean success);
+    }
 }

@@ -13,6 +13,13 @@ import spbpu.ponzelkoch.expensesadvisor.datamodels.Item;
 
 public class ModelsBuilder {
 
+    /**
+     * Method to build ArrayList of checks models  from server response.
+     * @param json response from server
+     * @return ArrayList of checks models
+     * @throws JSONException
+     * @throws ParseException
+     */
     public static ArrayList<Check> buildChecksFromJSON(final JSONObject json)
             throws JSONException, ParseException {
         final String ID_FIELD = "id";
@@ -37,6 +44,12 @@ public class ModelsBuilder {
         return models;
     }
 
+    /**
+     * Method to build ArrayList of items models from server response.
+     * @param json response from server
+     * @return ArrayList of items models
+     * @throws JSONException
+     */
     public static ArrayList<Item> buildItemsFromJSON(final JSONObject json) throws JSONException {
         final String ID_FIELD = "id";
         final String NAME_FIELD = "name";
@@ -61,6 +74,12 @@ public class ModelsBuilder {
         return models;
     }
 
+    /**
+     * Method to get ArrayList of categories from server response.
+     * @param json server response
+     * @return ArrayList of categories
+     * @throws JSONException
+     */
     public static ArrayList<String> getCategoriesFromJSON(final JSONObject json) throws JSONException {
         final String ARRAY_NAME = "categories";
 
