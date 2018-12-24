@@ -2,10 +2,13 @@ package spbpu.ponzelkoch.expensesadvisor.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -14,6 +17,8 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,44 +27,67 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.core.content.ContextCompat;
+import cz.msebera.android.httpclient.Header;
 import spbpu.ponzelkoch.expensesadvisor.R;
+import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 
 public class PieChartActivity extends AppCompatActivity {
 
+    private PieChart pieChart;
+    private ProgressBar progressBar;
+
+    private static final String STATISTICS_KEY = "statistics";
     private static final String CATEGORY_FIELD = "category";
     private static final String SUM_FIELD = "sum";
+
     private static final String DEBUG_TAG = "DebugPieChart";
     private static final String EXPENSES_TITLE = "Расходы";
-
-    private PieChart pieChart;
+    private static final String NO_DATA_TITLE = "Подождите, данные загружаются...";
+    private static final String DATA_LOAD_FAIL = "При загрузке данных произошла ошибка";
+    private static final String DATA_PARSING_FAIL = "Ошибка сервера";
 
     private static final int CHART_ANIMATION_DURATION = 1_000;
     private static final float CHART_HOLE_RADIUS = 35f;
     private static final float CHART_TRANSPARENT_RADIUS = 40f;
+    private static final float CHART_SLICES_GAP = 0f;
 
-    private static final float CHART_LEGEND_TEXT_SIZE = 12f;
-    private static final float CHART_VALUE_TEXT_SIZE = 20f;
+    private static final float CHART_LEGEND_TEXT_SIZE = 15f;
+    private static final float CHART_VALUE_TEXT_SIZE = 12f;
+
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pie_chart);
         pieChart = findViewById(R.id.pie_chart);
+        progressBar = findViewById(R.id.pie_chart_progress_bar);
+
+        Intent intent = getIntent();
+        username = intent.getStringExtra(LoginActivity.USERNAME);
+        password = intent.getStringExtra(LoginActivity.PASSWORD);
 
         setChartProperties();
         drawChart();
     }
 
     private void setChartProperties() {
+        int textColor = ContextCompat.getColor(this, R.color.color_primary_dark);
+
         pieChart.setUsePercentValues(true);
-        pieChart.setCenterText(EXPENSES_TITLE);
-        pieChart.setCenterTextColor(ContextCompat.getColor(this, R.color.color_primary_dark));
-        pieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         pieChart.animateY(CHART_ANIMATION_DURATION, Easing.EaseInOutCubic);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setNoDataText(NO_DATA_TITLE);
+        pieChart.setNoDataTextColor(textColor);
+
+        pieChart.setCenterText(EXPENSES_TITLE);
+        pieChart.setCenterTextColor(textColor);
+        pieChart.setCenterTextTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
         pieChart.setHoleRadius(CHART_HOLE_RADIUS);
         pieChart.setTransparentCircleRadius(CHART_TRANSPARENT_RADIUS);
-
-        pieChart.setDrawEntryLabels(false);
 
         Legend legend = pieChart.getLegend();
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -67,42 +95,75 @@ public class PieChartActivity extends AppCompatActivity {
         legend.setTextSize(CHART_LEGEND_TEXT_SIZE);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        legend.setYEntrySpace(5f);
-
-        pieChart.getDescription().setEnabled(false);
+        legend.setForm(Legend.LegendForm.CIRCLE);
     }
 
     private void drawChart() {
-        // TODO: loading from real server (use callback)
-        ArrayList<PieEntry> chartData;
+        PieChartActivity context = this;
 
-        try {
-            JSONArray chartDataJSONArray = loadTestData();
+        loadChartData((success, data) -> {
+            progressBar.setVisibility(View.INVISIBLE);
 
-            chartData = new ArrayList<>();
-            for(int i = 0; i < chartDataJSONArray.length(); ++i) {
-                JSONObject json = (JSONObject) chartDataJSONArray.get(i);
-                String category = json.getString(CATEGORY_FIELD);
-                float sum = (float) json.getDouble(SUM_FIELD);
-
-                chartData.add(new PieEntry(sum, category));
+            if (!success) {
+                Log.d(DEBUG_TAG, DATA_LOAD_FAIL);
+                Toast.makeText(context, DATA_LOAD_FAIL, Toast.LENGTH_SHORT).show();
+                onDestroy();
+                return;
             }
 
-        } catch (JSONException e) {
-            Log.d(DEBUG_TAG, "data loading failed");
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            ArrayList<PieEntry> chartData;
+            try {
+                chartData = new ArrayList<>();
+                for (int i = 0; i < data.length(); ++i) {
+                    JSONObject json = (JSONObject) data.get(i);
+                    String category = json.getString(CATEGORY_FIELD);
+                    float sum = (float) json.getDouble(SUM_FIELD);
 
-        PieDataSet pieDataSet = new PieDataSet(chartData, "");
-        pieDataSet.setColors(loadColors());
+                    chartData.add(new PieEntry(sum, category));
+                }
+            } catch (JSONException e) {
+                Log.d(DEBUG_TAG, DATA_PARSING_FAIL);
+                Toast.makeText(context, DATA_PARSING_FAIL, Toast.LENGTH_SHORT).show();
+                onDestroy();
+                return;
+            }
 
-        PieData pieData = new PieData(pieDataSet);
-        pieData.setValueTextColor(Color.WHITE);
-        pieData.setValueTextSize(CHART_VALUE_TEXT_SIZE);
+            // draw chart
+            PieDataSet pieDataSet = new PieDataSet(chartData, "");
+            pieDataSet.setColors(loadColors());
+            pieDataSet.setSliceSpace(CHART_SLICES_GAP);
 
-        pieChart.setData(pieData);
-        pieChart.invalidate();
+            PieData pieData = new PieData(pieDataSet);
+            pieData.setValueTextColor(Color.WHITE);
+            pieData.setValueTextSize(CHART_VALUE_TEXT_SIZE);
+            pieData.setValueFormatter(new PercentFormatter());
+
+            pieChart.setData(pieData);
+            pieChart.invalidate();
+
+        });
+    }
+
+    private void loadChartData(OnDataLoadCallback callback) {
+        RestClient.get(RestClient.STATISTICS_PIE_CHART_URL,
+                username, password,
+                new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        try {
+                            JSONArray data = response.getJSONArray(STATISTICS_KEY);
+                            callback.onJSONResponse(true, data);
+                        } catch (JSONException e) {
+                            callback.onJSONResponse(false, null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers,
+                                          Throwable throwable, JSONObject errorResponse) {
+                        callback.onJSONResponse(false, null);
+                    }
+                });
     }
 
     private ArrayList<Integer> loadColors() {
@@ -121,16 +182,7 @@ public class PieChartActivity extends AppCompatActivity {
         return colors;
     }
 
-    private static JSONArray loadTestData() throws JSONException {
-        JSONArray data = new JSONArray();
-
-        for(int i = 0; i < 5; ++i) {
-            JSONObject json = new JSONObject();
-            json.put(CATEGORY_FIELD, String.format("Category %d", i + 1));
-            json.put(SUM_FIELD, 10.0 * (i + 1));
-            data.put(json);
-        }
-
-        return data;
+    private interface OnDataLoadCallback {
+        void onJSONResponse(boolean success, JSONArray data);
     }
 }
