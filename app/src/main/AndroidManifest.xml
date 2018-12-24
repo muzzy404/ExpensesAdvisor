@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity"></activity>
-        <activity android:name=".activities.CheckItemsActivity"></activity>
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.CheckItemsActivity" />
+        <activity android:name=".activities.PieChartActivity" />
+        <activity android:name=".activities.LineChartActivity"></activity>
     </application>
 
 </manifest>

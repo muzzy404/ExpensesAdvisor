@@ -35,6 +35,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -42,6 +46,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'com.budiyev.android:code-scanner:2.0.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.json:json:20140107'
     androidTestImplementation 'androidx.test:runner:1.1.0'
