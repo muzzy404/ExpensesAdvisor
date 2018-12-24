@@ -10,7 +10,9 @@
     </string>
     <string name="title_login">логин</string>
     <string name="title_password">пароль</string>
+    <string name="title_password_confirm">подтвердите пароль</string>
     <string name="title_login_button">войти</string>
+    <string name="title_signup_button">регистрация</string>
     <string name="title_set_common_category">Установить общую категорию на чек</string>
 
     <string name="title_pie_chart">Доля расходов на категории товаров</string>

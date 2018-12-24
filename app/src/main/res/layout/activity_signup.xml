@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_primary_dark"
+    tools:context=".activities.LoginActivity">
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="@dimen/login_card_width"
+        android:paddingStart="@dimen/login_card_padding"
+        android:paddingEnd="@dimen/login_card_padding"
+        android:paddingTop="@dimen/login_card_padding"
+        android:paddingBottom="@dimen/login_card_padding"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_white">
+
+        <EditText
+            android:id="@+id/signup_username_field"
+            style="@style/LoginFieldsTheme"
+            android:hint="@string/title_login"
+            android:inputType="textPersonName" />
+
+        <EditText
+        android:id="@+id/signup_password_field"
+        style="@style/LoginFieldsTheme"
+        android:hint="@string/title_password"
+        android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/signup_password_confirm_field"
+            style="@style/LoginFieldsTheme"
+            android:hint="@string/title_password_confirm"
+            android:inputType="textPassword" />
+
+        <ProgressBar
+            android:id="@+id/signup_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/signup_button"
+            android:layout_marginTop="@dimen/login_card_button_top_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:background="@color/color_primary"
+            android:text="@string/title_signup_button" />
+    </LinearLayout>
+</FrameLayout>

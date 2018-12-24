@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameField;
     private EditText passwordField;
     private ProgressBar progressBar;
+    private TextView signUpLink;
 
     private static final String RESPONSE_ON_403 = "Неправильный логин или пароль. Попробуйте еще раз.";
     private static final String LOGIN_SERVER_ERROR = "Ошибка сервера при входе. Попробуйте еще раз.";
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        TextView signUpLink = findViewById(R.id.signup_link);
+        signUpLink = findViewById(R.id.signup_link);
         signUpLink.setText(R.string.title_sign_up_link);
 
         usernameField = findViewById(R.id.username_field);
@@ -57,6 +58,12 @@ public class LoginActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
                 e.printStackTrace();
             }
+        });
+
+        LoginActivity context = this;
+        signUpLink.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SignupActivity.class);
+            startActivity(intent);
         });
     }
 
