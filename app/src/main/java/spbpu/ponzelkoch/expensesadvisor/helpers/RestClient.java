@@ -17,6 +17,7 @@ public class RestClient {
     private static final String BASE_URL = "https://expenses-advisor.herokuapp.com";
 
     public static final String LOGIN_URL = "/user/login";
+    public static final String SIGN_UP_URL = "/user/registration";
     public static final String SEND_QR_URL = "/sendQRcode";
     public static final String RECENT_CHECKS_URL = "/checks/getRecent";
     public static final String CATEGORIES_URL = "/categories";

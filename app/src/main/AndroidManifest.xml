@@ -28,7 +28,7 @@
         <activity android:name=".activities.CheckItemsActivity" />
         <activity android:name=".activities.PieChartActivity" />
         <activity android:name=".activities.LineChartActivity" />
-        <activity android:name=".activities.SignupActivity"></activity>
+        <activity android:name=".activities.SignUpActivity"></activity>
     </application>
 
 </manifest>

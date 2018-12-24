@@ -42,7 +42,8 @@ public class PieChartActivity extends AppCompatActivity {
 
     private static final String DEBUG_TAG = "DebugPieChart";
     private static final String EXPENSES_TITLE = "Расходы";
-    private static final String NO_DATA_TITLE = "Подождите, данные загружаются...";
+    private static final String NO_DATA_TITLE = "Нет данных";
+    private static final String NO_LOADED_DATA_TITLE = "Подождите, данные загружаются...";
     private static final String DATA_LOAD_FAIL = "При загрузке данных произошла ошибка";
     private static final String DATA_PARSING_FAIL = "Ошибка сервера";
 
@@ -79,7 +80,7 @@ public class PieChartActivity extends AppCompatActivity {
         pieChart.animateY(CHART_ANIMATION_DURATION, Easing.EaseInOutCubic);
         pieChart.setDrawEntryLabels(false);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setNoDataText(NO_DATA_TITLE);
+        pieChart.setNoDataText(NO_LOADED_DATA_TITLE);
         pieChart.setNoDataTextColor(textColor);
 
         pieChart.setCenterText(EXPENSES_TITLE);
@@ -124,7 +125,7 @@ public class PieChartActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.d(DEBUG_TAG, DATA_PARSING_FAIL);
                 Toast.makeText(context, DATA_PARSING_FAIL, Toast.LENGTH_SHORT).show();
-                onDestroy();
+                finish();
                 return;
             }
 
@@ -138,9 +139,10 @@ public class PieChartActivity extends AppCompatActivity {
             pieData.setValueTextSize(CHART_VALUE_TEXT_SIZE);
             pieData.setValueFormatter(new PercentFormatter());
 
+            if (chartData.size() == 0)
+                pieChart.setCenterText(NO_DATA_TITLE);
             pieChart.setData(pieData);
             pieChart.invalidate();
-
         });
     }
 

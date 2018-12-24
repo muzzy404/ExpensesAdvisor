@@ -32,14 +32,6 @@
             android:hint="@string/title_password"
             android:inputType="textPassword" />
 
-        <TextView
-            android:id="@+id/signup_link"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_primary_dark"
-            android:textSize="@dimen/login_field_text_size"
-            android:gravity="center"
-            android:text="@string/title_sign_up_link" />
 
         <ProgressBar
             android:id="@+id/login_progress_bar"
@@ -57,5 +49,14 @@
             android:textColor="@color/color_white"
             android:background="@color/color_primary"
             android:text="@string/title_login_button" />
+
+        <Button
+            android:id="@+id/login_signup_button"
+            android:layout_marginTop="@dimen/card_padding_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:background="@color/color_primary"
+            android:text="@string/title_signup_button" />
     </LinearLayout>
 </FrameLayout>

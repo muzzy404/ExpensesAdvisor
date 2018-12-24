@@ -6,7 +6,7 @@
 
     <!-- login screen string constants -->
     <string name="title_sign_up_link">
-        <u>Нет аккаунта? Зарегистрируйтесь здесь</u>.
+        <u>Нет аккаунта?\nЗарегистрируйтесь здесь</u>.
     </string>
     <string name="title_login">логин</string>
     <string name="title_password">пароль</string>
