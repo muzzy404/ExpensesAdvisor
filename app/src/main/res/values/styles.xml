@@ -38,5 +38,26 @@
         <item name="android:paddingEnd">@dimen/card_padding_big</item>
     </style>
 
+    <style name="StatisticsTitleStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/card_padding_medium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawableTint">@color/color_primary_dark</item>
+        <item name="android:textColor">@color/color_primary_dark</item>
+    </style>
+
+    <style name="StatisticsCardStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:elevation">@dimen/card_elevation_extra_small</item>
+        <item name="android:backgroundTint">@color/color_white</item>
+        <item name="android:padding">@dimen/card_padding_medium</item>
+        <item name="android:layout_margin">@dimen/card_padding_small</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/edit_rounded_field</item>
+    </style>
 
 </resources>

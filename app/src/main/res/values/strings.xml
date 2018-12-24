@@ -13,6 +13,11 @@
     <string name="title_login_button">войти</string>
     <string name="title_set_common_category">Установить общую категорию на чек</string>
 
+    <string name="title_pie_chart">Доля расходов на категории товаров</string>
+    <string name="title_line_chart">Динамика ежедневных расходов</string>
+    <string name="description_pie_chart">Отображение ваших расходов на отдельные категории товаров в виде круговой диаграммы</string>
+    <string name="description_line_chart">Отображение ваших расходов по дням в течение последнего месяца</string>
+
     <string name="sample_check_date">15 сентября 2018, 12:15</string>
     <string name="sample_check_sum">1500.00</string>
     <string name="sample_check_place">Пятерочка</string>

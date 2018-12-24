@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.StatisticsFragment">
+
+    <LinearLayout
+        style="@style/StatisticsCardStyle">
+        <TextView
+            android:drawableEnd="@drawable/ic_pie_chart_black_24dp"
+            android:text="@string/title_pie_chart"
+            style="@style/StatisticsTitleStyle"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description_pie_chart"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/StatisticsCardStyle">
+        <TextView
+            android:drawableEnd="@drawable/ic_timeline_black_24dp"
+            android:text="@string/title_line_chart"
+            style="@style/StatisticsTitleStyle"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description_line_chart"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -11,4 +37,4 @@
         android:gravity="center"
         android:text="@string/title_statistics" />
 
-</FrameLayout>
+</LinearLayout>

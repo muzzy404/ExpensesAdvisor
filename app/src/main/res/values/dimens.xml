@@ -17,6 +17,8 @@
     <dimen name="card_padding_medium">10dp</dimen>
     <dimen name="card_padding_small">5dp</dimen>
 
+    <dimen name="card_elevation_extra_small">3dp</dimen>
+    <dimen name="card_elevation_small">5dp</dimen>
     <dimen name="card_elevation_medium">10dp</dimen>
 
     <dimen name="spinner_spinner_height">28dp</dimen>
