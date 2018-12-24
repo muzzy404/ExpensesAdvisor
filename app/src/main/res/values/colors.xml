@@ -11,4 +11,11 @@
     <color name="color_gray">#647b7b7b</color>
     <color name="color_login_filed">#ebe4ec</color>
     <color name="color_error">#e91a6d</color>
+
+    <color name="color_pie_chart_1">#4527a0</color>
+    <color name="color_pie_chart_2">#4a148c</color>
+    <color name="color_pie_chart_3">#8e24aa</color>
+    <color name="color_pie_chart_4">#c51162</color>
+    <color name="color_pie_chart_5">#e91a6d</color>
+    <color name="color_pie_chart_6">#ff5252</color>
 </resources>

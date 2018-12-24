@@ -22,4 +22,6 @@
     <dimen name="card_elevation_medium">10dp</dimen>
 
     <dimen name="spinner_spinner_height">28dp</dimen>
+
+    <dimen name="chart_title_text_size">18sp</dimen>
 </resources>
