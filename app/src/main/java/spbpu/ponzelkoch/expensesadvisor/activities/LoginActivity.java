@@ -8,8 +8,10 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.RestClient;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +29,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String LOGIN_FAILED = "login failed: %s";
     private static final String JSON_CREATION_FAILED = "json creation failed";
 
-    EditText usernameField;
-    EditText passwordField;
+    private EditText usernameField;
+    private EditText passwordField;
+    private ProgressBar progressBar;
 
     private static final String RESPONSE_ON_403 = "Неправильный логин или пароль. Попробуйте еще раз.";
     private static final String LOGIN_SERVER_ERROR = "Ошибка сервера при входе. Попробуйте еще раз.";
@@ -44,12 +47,14 @@ public class LoginActivity extends AppCompatActivity {
 
         usernameField = findViewById(R.id.username_field);
         passwordField = findViewById(R.id.password_field);
+        progressBar = findViewById(R.id.login_progress_bar);
 
         final Button loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
             try {
                 login();
             } catch (Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
                 e.printStackTrace();
             }
         });
@@ -61,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void login() {
         final String username = usernameField.getText().toString().trim();
         final String password = passwordField.getText().toString();
+        progressBar.setVisibility(View.VISIBLE);
 
         // create JSONObject for request
         JSONObject json = new JSONObject();
@@ -71,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (JSONException e) {
             Log.d(DEBUG_TAG, JSON_CREATION_FAILED);
             Toast.makeText(this, JSON_CREATION_FAILED, Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.INVISIBLE);
             return;
         }
 
@@ -79,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             RestClient.post(this, RestClient.LOGIN_URL, json, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    progressBar.setVisibility(View.INVISIBLE);
                     // start MainActivity if login was successful
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.putExtra(USERNAME, username);
@@ -88,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    progressBar.setVisibility(View.INVISIBLE);
                     String failMessage;
                     switch (statusCode) {
                         case 403:
@@ -105,8 +114,8 @@ public class LoginActivity extends AppCompatActivity {
             String failMessage = String.format(LOGIN_FAILED, e.getMessage());
             Log.d(DEBUG_TAG, failMessage);
             Toast.makeText(this, failMessage, Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.INVISIBLE);
         }
-
     }
 
 }

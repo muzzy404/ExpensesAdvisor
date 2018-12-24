@@ -11,7 +11,7 @@
 
     <dimen name="login_card_padding">20dp</dimen>
     <dimen name="login_card_width">250dp</dimen>
-    <dimen name="login_card_button_top_margin">50dp</dimen>
+    <dimen name="login_card_button_top_margin">35dp</dimen>
 
     <dimen name="card_padding_big">20dp</dimen>
     <dimen name="card_padding_medium">10dp</dimen>
