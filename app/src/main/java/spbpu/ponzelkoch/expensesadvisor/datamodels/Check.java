@@ -15,10 +15,10 @@ public class Check implements Comparable<Check> {
     private double sum;
 
     private static String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"; // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-    private static String DATETIME_TITLE = "EEE d MMM yyyy";
+    private static String DATETIME_TITLE = "d MMMM yyyy, EEE, HH:mm";
 
     private SimpleDateFormat toDateFormatter = new SimpleDateFormat(DATETIME_PATTERN, Locale.US);
-    private SimpleDateFormat toTitleFormatter = new SimpleDateFormat("d MMMM yyyy, EEE, HH:mm", Locale.getDefault());
+    private SimpleDateFormat toTitleFormatter = new SimpleDateFormat(DATETIME_TITLE, Locale.getDefault());
 
     private static final String UNKNOWN = "Неизвестно";
 

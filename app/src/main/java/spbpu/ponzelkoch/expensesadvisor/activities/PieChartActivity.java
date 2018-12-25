@@ -108,7 +108,7 @@ public class PieChartActivity extends AppCompatActivity {
             if (!success) {
                 Log.d(DEBUG_TAG, DATA_LOAD_FAIL);
                 Toast.makeText(context, DATA_LOAD_FAIL, Toast.LENGTH_SHORT).show();
-                onDestroy();
+                finish();
                 return;
             }
 
