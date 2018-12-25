@@ -37,8 +37,9 @@ public class StatisticsFragment extends Fragment {
 
         // set listener to line chart card to open pie line activity by click
         root.findViewById(R.id.statistics_line_chart_card).setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), PieChartActivity.class);
-            startActivity(intent);
+//            TODO: open line chart
+//            Intent intent = new Intent(getContext(), LineChartActivity.class);
+//            startActivity(intent);
         });
 
         return root;
