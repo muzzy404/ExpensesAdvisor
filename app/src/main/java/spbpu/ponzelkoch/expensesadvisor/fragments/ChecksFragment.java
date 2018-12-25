@@ -43,6 +43,8 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
     private final String GET_CHECKS_SUCCESS = "Чеки успешно загружены";
     private final String CHECKS_PARSING_FAIL = "Ошибка при парсинге списка чеков с сервреа (1)";
 
+    private final static int CHECKS_NUMBER = 100;
+
     private ArrayList<Check> checks = new ArrayList<>();
 
     private RecyclerView recyclerView;
@@ -95,7 +97,7 @@ public class ChecksFragment extends Fragment implements ChecksListAdapter.Checks
     private void getChecksFromServer() {
         final MainActivity activity = (MainActivity) getActivity();
 
-        RestClient.get(RestClient.RECENT_CHECKS_URL,
+        RestClient.get(String.format(RestClient.RECENT_CHECKS_URL, CHECKS_NUMBER),
                        activity.getUsername(), activity.getPassword(),
                        new JsonHttpResponseHandler() {
 

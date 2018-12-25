@@ -19,7 +19,7 @@ public class RestClient {
     public static final String LOGIN_URL = "/user/login";
     public static final String SIGN_UP_URL = "/user/registration";
     public static final String SEND_QR_URL = "/sendQRcode";
-    public static final String RECENT_CHECKS_URL = "/checks/getRecent";
+    public static final String RECENT_CHECKS_URL = "/checks/getRecent?num=%d";
     public static final String CATEGORIES_URL = "/categories";
     public static final String ITEMS_URL = "/items/checkID/%d";
     public static final String UPDATE_CATEGORY_URL = "/items/updateCategory";

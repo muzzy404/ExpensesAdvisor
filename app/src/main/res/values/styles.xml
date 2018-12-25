@@ -55,7 +55,10 @@
         <item name="android:elevation">@dimen/card_elevation_extra_small</item>
         <item name="android:backgroundTint">@color/color_white</item>
         <item name="android:padding">@dimen/card_padding_medium</item>
-        <item name="android:layout_margin">@dimen/card_padding_small</item>
+        <item name="android:layout_marginStart">@dimen/card_padding_medium</item>
+        <item name="android:layout_marginEnd">@dimen/card_padding_medium</item>
+        <item name="android:layout_marginTop">@dimen/card_padding_small</item>
+        <item name="android:layout_marginBottom">@dimen/card_padding_small</item>
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/edit_rounded_field</item>
     </style>

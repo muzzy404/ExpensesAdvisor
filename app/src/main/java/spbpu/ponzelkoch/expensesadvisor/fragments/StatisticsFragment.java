@@ -16,8 +16,6 @@ import static spbpu.ponzelkoch.expensesadvisor.activities.LoginActivity.USERNAME
 
 public class StatisticsFragment extends Fragment {
 
-    public static final String TITLE = "title";
-
     public StatisticsFragment() {
         // Required empty public constructor
     }
