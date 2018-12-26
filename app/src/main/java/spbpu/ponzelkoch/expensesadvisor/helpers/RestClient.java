@@ -23,7 +23,9 @@ public class RestClient {
     public static final String CATEGORIES_URL = "/categories";
     public static final String ITEMS_URL = "/items/checkID/%d";
     public static final String UPDATE_CATEGORY_URL = "/items/updateCategory";
+
     public static final String STATISTICS_PIE_CHART_URL = "/statistics/categories";
+    public static final String STATISTICS_LINE_CHART_URL = "/statistics/daily";
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
