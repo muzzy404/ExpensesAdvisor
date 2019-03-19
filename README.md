@@ -3,7 +3,7 @@
 This is an Android client for ExpensesAdvisor application. Back-end of ExpensesAdvisor can be found [here](https://github.com/ponomareva1/ExpensesAdvisor_server).
 This application was developed as an university course project.
 
-__min SDK Version: 23__
+__min SDK Version: 21__
 
 ## ExpensesAdvisor user interface
 
