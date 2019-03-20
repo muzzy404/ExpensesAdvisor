@@ -47,9 +47,11 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'com.budiyev.android:code-scanner:2.0.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
-    testImplementation 'junit:junit:4.12'
     testImplementation 'org.json:json:20140107'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    implementation 'com.loopj.android:android-async-http:1.4.9'
+    testImplementation "com.google.truth:truth:0.43"
 }

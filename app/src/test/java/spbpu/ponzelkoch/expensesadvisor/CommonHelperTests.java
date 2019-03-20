@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import spbpu.ponzelkoch.expensesadvisor.helpers.CommonHelper;
 
-// TODO: change inner structure of tests
+// TODO: change
 public class CommonHelperTests {
 
     @Test
