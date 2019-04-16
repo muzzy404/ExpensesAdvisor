@@ -3,7 +3,6 @@ package spbpu.ponzelkoch.expensesadvisor;
 // TODO: decide - use Assert or Truth
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.truth.Truth;
@@ -43,14 +42,14 @@ public class ModelsBuilderTest {
         Collections.sort(expected);  // do not forget to sort
 
         // get string representation of actual checks
-        ArrayList<Item> items = ModelsBuilder.buildItemsFromJSON(new JSONObject(Const.ITEM_JSON_STRING));
+        ArrayList<Item> items = ModelsBuilder.buildItemsFromJSON(new JSONObject(Const.TWO_ITEMS_JSON_STRING));
         ArrayList<String> actual = items.stream().map(Item::toString).collect(Collectors.toCollection(ArrayList::new));
 
         Truth.assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    public void CategoriesBuildPositiveTest() throws JSONException {
+    public void modelBuilder_CorrectCategoriesJSON_ReturnsCorrectCategoriesList() throws JSONException {
         // expected from constant strings
         ArrayList<String> expected = new ArrayList<>(Arrays.asList(Const.CATEGORY_REFERENCE_1,
                                                                    Const.CATEGORY_REFERENCE_2));
@@ -85,7 +84,7 @@ class Const {
     public static final String CHECK_ITEM_REFERENCE_1 = "73 | 27 September 2018, Thu, 18:01 | Агроторг ООО | 328.77";
     public static final String CHECK_ITEM_REFERENCE_2 = "16 | 8 November 2018, Thu, 14:33 | ООО \"ТК Прогресс\" | 1512.00";
 
-    public static final String ITEM_JSON_STRING = "{\n" +
+    public static final String TWO_ITEMS_JSON_STRING = "{\n" +
                     "  \"items\": [\n" +
                     "    {\n" +
                     "      \"id\": 85,\n" +
@@ -105,6 +104,8 @@ class Const {
                     "}";
     public static final String ITEM_REFERENCE_1 = "85 | Нектар Добрый апельсин 2л т/п | 94.99 | 1 | Продукты";
     public static final String ITEM_REFERENCE_2 = "93 | Томаты кг | 133.10 | 1.70 | Продукты";
+    public static final long ITEM_ID_1 = 85;
+    public static final long ITEM_ID_2 = 93;
 
     public static final String CATEGORIES_JSON = "{\n" +
             "  \"categories\": [\n" +
