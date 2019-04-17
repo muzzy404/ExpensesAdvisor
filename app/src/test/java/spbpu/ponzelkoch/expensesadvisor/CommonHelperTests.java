@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -33,7 +34,7 @@ public class CommonHelperTests {
     public void commonHelper_ItemsList_ReturnsUpdatingToAllCategoriesJSON() throws JSONException {
         ArrayList<Item> items = ModelsBuilder.buildItemsFromJSON(new JSONObject(Const.TWO_ITEMS_JSON_STRING));
 
-        final String newCategory = "test category";
+        final String newCategory = "commonHelper_DifferentCategoriesUpdate_ReturnsArrayWithSizeOfCategoriesNumber category";
         items.get(0).setCategory(newCategory);
         items.get(1).setCategory(newCategory);
 
@@ -74,6 +75,27 @@ public class CommonHelperTests {
         ArrayList<JSONObject> actual = CommonHelper.getUpdateItemsCategoriesJSON(items);
 
         Assert.assertEquals(expected.toString(), actual.toString());
+    }
+
+    @Test
+    public void commonHelper_DifferentCategoriesUpdate_ReturnsArrayWithSizeOfCategoriesNumber() throws JSONException {
+        ArrayList<Item> items = new ArrayList<>();
+        String categoryPattern = "category {0}";
+        String namePattern = "item {0}";
+
+        // create 5 object with different categories
+        for(long i = 1; i < 6; ++i) {
+           items.add(new Item(i, MessageFormat.format(namePattern, i), i * 10.0, i,
+                   MessageFormat.format(categoryPattern, i)));
+        }
+        // change category for 2 items (to make the number of categories == 3)
+        items.get(1).setCategory(MessageFormat.format(categoryPattern, 1));
+        items.get(3).setCategory(MessageFormat.format(categoryPattern, 1));
+
+        ArrayList<JSONObject> updateItemsCategoriesJSON = CommonHelper.getUpdateItemsCategoriesJSON(items);
+        int actual = updateItemsCategoriesJSON.size();
+
+        Assert.assertEquals(3, actual);
     }
 
 }

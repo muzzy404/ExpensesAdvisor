@@ -24,7 +24,8 @@ public class ModelsBuilderTest {
     public void modelsBuilder_CorrectCheckJSON_ReturnsCorrectCheckModel() throws JSONException, ParseException {
         // expected from constant strings
         ArrayList<String> expected = new ArrayList<>(Arrays.asList(Const.CHECK_ITEM_REFERENCE_1,
-                                                                   Const.CHECK_ITEM_REFERENCE_2));
+                                                                   Const.CHECK_ITEM_REFERENCE_2,
+                                                                   Const.CHECK_ITEM_REFERENCE_3));
         Collections.sort(expected);  // do not forget to sort
 
         // get string representation of actual checks
@@ -74,6 +75,12 @@ class Const {
                     "      \"sum\": 328.77\n" +
                     "    },\n" +
                     "    {\n" +
+                    "      \"id\": 22,\n" +
+                    "      \"date\": \"2018-09-30T15:30:00\",\n" +
+                    "      \"shop\": \"\",\n" +
+                    "      \"sum\": 555.00\n" +
+                    "    },\n" +
+                    "    {\n" +
                     "      \"id\": 16,\n" +
                     "      \"date\": \"2018-11-08T14:33:00\",\n" +
                     "      \"shop\": \"ООО \\\"ТК Прогресс\\\"\",\n" +
@@ -82,7 +89,8 @@ class Const {
                     "  ]\n" +
                     "}";
     public static final String CHECK_ITEM_REFERENCE_1 = "73 | 27 September 2018, Thu, 18:01 | Агроторг ООО | 328.77";
-    public static final String CHECK_ITEM_REFERENCE_2 = "16 | 8 November 2018, Thu, 14:33 | ООО \"ТК Прогресс\" | 1512.00";
+    public static final String CHECK_ITEM_REFERENCE_2 = "22 | 30 September 2018, Sun, 15:30 | Неизвестно | 555.00";
+    public static final String CHECK_ITEM_REFERENCE_3 = "16 | 8 November 2018, Thu, 14:33 | ООО \"ТК Прогресс\" | 1512.00";
 
     public static final String TWO_ITEMS_JSON_STRING = "{\n" +
                     "  \"items\": [\n" +

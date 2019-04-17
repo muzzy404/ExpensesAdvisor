@@ -52,6 +52,7 @@ public class CommonHelper {
         final String CATEGORY_FILED = "category";
         final String CATEGORY_IDS = "ids";
 
+        // sorting by categories (see compareTo method of Item)
         Collections.sort(items);
         String currentCategory = items.get(0).getCategory();
 
