@@ -18,7 +18,6 @@ public class CommonHelper {
      * @throws JSONException
      */
     public static JSONObject QRStringToJSON(String string) throws JSONException {
-        // TODO: add checking for wrong QRs
         JSONObject result = new JSONObject();
         String[] items = string.split("&");
         for(String item: items) {

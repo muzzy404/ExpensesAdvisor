@@ -56,7 +56,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.Item
         holder.categorySpinner.setAdapter(spinnerAdapter);
         holder.categorySpinner.setSelection(categories.indexOf(item.getCategory()));
 
-        // // set Listener that implements ItemCategoryCallback
+        // set Listener that implements ItemCategoryCallback
         final int itemPosition = position;
         holder.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private boolean firstSelection = true;

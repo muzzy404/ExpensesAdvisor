@@ -15,7 +15,7 @@ import spbpu.ponzelkoch.expensesadvisor.helpers.CommonHelper;
 import spbpu.ponzelkoch.expensesadvisor.helpers.ModelsBuilder;
 
 
-public class CommonHelperTests {
+public class CommonHelperTest {
 
     @Test
     public void commonHelper_CorrectCheckString_ReturnsCorrectJSON() throws JSONException {
@@ -78,7 +78,8 @@ public class CommonHelperTests {
     }
 
     @Test
-    public void commonHelper_DifferentCategoriesUpdate_ReturnsArrayWithSizeOfCategoriesNumber() throws JSONException {
+    public void commonHelper_DifferentCategoriesUpdate_ReturnsArrayWithSizeOfCategoriesNumber()
+            throws JSONException {
         ArrayList<Item> items = new ArrayList<>();
         String categoryPattern = "category {0}";
         String namePattern = "item {0}";
